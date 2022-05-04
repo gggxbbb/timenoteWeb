@@ -117,6 +117,7 @@ func LoadLastJSONFile(logger *logrus.Logger) GeneralData {
 	}
 
 	data = LoadGeneralData("./data/timeNote/" + lastModifiedFile.Name())
+	data.Source = lastModifiedFile.Name()
 
 	return data
 }

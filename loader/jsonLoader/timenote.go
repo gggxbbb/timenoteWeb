@@ -1,5 +1,7 @@
 package jsonLoader
 
+import "encoding/json"
+
 type RawData struct {
 	Version  int    `json:"version"`
 	Platform string `json:"platform"`
@@ -71,7 +73,36 @@ type TodoData struct {
 }
 
 type GeneralData struct {
+	Source     string         `json:"source"`
 	Notes      []NoteData     `json:"notes"`
 	Todos      []TodoData     `json:"todos"`
 	Categories []CategoryData `json:"categories"`
+}
+
+func (c GeneralData) DumpBackupLikeJSON() string {
+
+	opt := map[string]interface{}{
+		"version":  2,
+		"platform": "web",
+		"tables": []map[string]interface{}{
+			{
+				"name": "note",
+				"data": c.Notes,
+			},
+			{
+				"name": "todo",
+				"data": c.Todos,
+			},
+			{
+				"name": "category",
+				"data": c.Categories,
+			},
+		},
+	}
+
+	data, err := json.Marshal(opt)
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
 }
