@@ -23,7 +23,7 @@ func DavServer(prefix string, rootDir string,
 				c.AbortWithStatus(403)
 				return
 			}
-			c.Status(200) // 200 by default, which may be override later
+			c.Status(200)
 			w.ServeHTTP(c.Writer, c.Request)
 			c.Abort()
 		}

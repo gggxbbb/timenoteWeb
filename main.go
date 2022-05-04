@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"timenoteWeb/auth"
+	"timenoteWeb/loader/jsonLoader"
 	"timenoteWeb/utils"
 	"timenoteWeb/webdav"
 )
@@ -41,6 +42,11 @@ func main() {
 			logger.Error(err)
 		}),
 	)
+
+	r.GET("/data", func(context *gin.Context) {
+		context.JSON(http.StatusOK,
+			jsonLoader.LoadLastJSONFile(logger))
+	})
 
 	// run
 	err := r.Run(":7080")

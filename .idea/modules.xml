@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/timenoteWeb.iml" filepath="$PROJECT_DIR$/.idea/timenoteWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TimenoteWeb.iml" filepath="$PROJECT_DIR$/.idea/TimenoteWeb.iml" />
     </modules>
   </component>
 </project>
