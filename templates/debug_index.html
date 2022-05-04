@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>Debug Home</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<h1>Debug 页</h1>
+<!-- 列出所有 note -->
+<h2>Notes</h2>
+{{ range .Notes }}
+<div>
+    <a href="/debug/note/{{ .ID }}">{{ .Title }}</a>
+</div>
+{{ end }}
+<!-- 列出所有 to-do -->
+<h2>Todos</h2>
+{{ range .Todos }}
+<div>
+    <a>{{ .Title }}</a>
+</div>
+{{ end }}
+<!-- 列出所有 category -->
+<h2>Categories</h2>
+{{ range .Categories }}
+<div>
+    <a>{{ .CategoryName }}</a>
+</div>
+{{ end }}
+</body>
+</html>

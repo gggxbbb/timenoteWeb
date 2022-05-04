@@ -1,15 +1,23 @@
 package main
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"html/template"
 	"net/http"
 	"os"
 	"timenoteWeb/auth"
-	"timenoteWeb/loader/jsonLoader"
+	"timenoteWeb/routes"
 	"timenoteWeb/utils"
 	"timenoteWeb/webdav"
 )
+
+//go:embed assets/*
+var assets embed.FS
+
+//go:embed templates/*
+var templates embed.FS
 
 func main() {
 
@@ -28,6 +36,16 @@ func main() {
 	// init gin
 	r := gin.Default()
 
+	// load templates
+	templates, err := template.ParseFS(templates, "templates/*.html")
+	if err != nil {
+		panic(err)
+	}
+	r.SetHTMLTemplate(templates)
+
+	// load static files
+	r.StaticFS("/assets/", http.FS(assets))
+
 	//setup logger
 	r.Use(utils.LoggerMiddleware(logger))
 
@@ -43,13 +61,10 @@ func main() {
 		}),
 	)
 
-	r.GET("/data", func(context *gin.Context) {
-		context.JSON(http.StatusOK,
-			jsonLoader.LoadLastJSONFile(logger))
-	})
+	routes.DebugRoute(r, logger)
 
 	// run
-	err := r.Run(":7080")
+	err = r.Run(":7080")
 	if err != nil {
 		return
 	}
