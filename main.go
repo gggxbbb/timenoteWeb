@@ -7,7 +7,9 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strconv"
 	"timenoteWeb/auth"
+	"timenoteWeb/config"
 	"timenoteWeb/routes"
 	"timenoteWeb/utils"
 	"timenoteWeb/webdav"
@@ -19,9 +21,11 @@ var assets embed.FS
 //go:embed templates/*
 var templates embed.FS
 
+var logger *logrus.Logger
+
 func main() {
 
-	logger := logrus.New()
+	logger = logrus.New()
 	logger.SetLevel(logrus.DebugLevel)
 	logger.Out = os.Stdout
 
@@ -33,6 +37,11 @@ func main() {
 		}
 	}
 
+	// Load config
+	appConfig, err := config.LoadConfig()
+	if err != nil {
+		logger.Fatal(err)
+	}
 	// init gin
 	r := gin.Default()
 
@@ -43,7 +52,7 @@ func main() {
 	}
 	r.SetHTMLTemplate(templates)
 
-	// load static files
+	// load assets files
 	r.StaticFS("/assets/", http.FS(assets))
 
 	//setup logger
@@ -54,18 +63,23 @@ func main() {
 		"/dav",
 		"./data",
 		func(c *gin.Context) bool {
-			return auth.BasicAuth(c)
+			return auth.BasicAuth(c, appConfig)
 		},
 		func(req *http.Request, err error) {
 			logger.Error(err)
 		}),
 	)
 
-	routes.DebugRoute(r, logger)
+	if gin.Mode() == gin.DebugMode {
+		routes.DebugRoute(r, appConfig, logger)
+	}
 
 	// run
-	err = r.Run(":7080")
-	if err != nil {
-		return
+	srv := &http.Server{
+		Addr:    appConfig.Listen + ":" + strconv.Itoa(appConfig.Port),
+		Handler: r,
 	}
+	srv.SetKeepAlivesEnabled(true)
+	logger.Info("Listening on " + appConfig.Listen + ":" + strconv.Itoa(appConfig.Port))
+	logger.Fatal(srv.ListenAndServe())
 }
