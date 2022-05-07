@@ -2,8 +2,8 @@ package config
 
 import (
 	"github.com/fsnotify/fsnotify"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	. "timenoteWeb/logger"
 )
 
 type ServerConfig struct {
@@ -27,7 +27,9 @@ type Config struct {
 	Web    WebConfig    `json:"web"`
 }
 
-func LoadConfig(logger *logrus.Logger) (config *Config, err error) {
+var AppConfig *Config
+
+func init() {
 
 	viper.SetDefault("server", ServerConfig{
 		Listen: "0.0.0.0",
@@ -48,23 +50,23 @@ func LoadConfig(logger *logrus.Logger) (config *Config, err error) {
 
 	_ = viper.SafeWriteConfig()
 
-	err = viper.ReadInConfig()
+	err := viper.ReadInConfig()
 	if err != nil {
 		return
 	}
 
 	_ = viper.WriteConfig()
 
-	err = viper.Unmarshal(&config)
+	err = viper.Unmarshal(&AppConfig)
 	if err != nil {
 		return
 	}
 
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		err := viper.Unmarshal(&config)
-		logger.Info("Config file changed: ", e.Name)
+		err := viper.Unmarshal(&AppConfig)
+		Logger.Info("Config file changed: ", e.Name)
 		if err != nil {
-			logger.Error("Unmarshal config file failed: ", err)
+			Logger.Error("Unmarshal config file failed: ", err)
 		}
 	})
 	viper.WatchConfig()

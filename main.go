@@ -2,15 +2,14 @@ package main
 
 import (
 	"embed"
-	"github.com/antonfisher/nested-logrus-formatter"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"html/template"
 	"net/http"
 	"os"
 	"strconv"
 	"timenoteWeb/auth"
-	"timenoteWeb/config"
+	. "timenoteWeb/config"
+	. "timenoteWeb/logger"
 	"timenoteWeb/routes"
 	"timenoteWeb/utils"
 )
@@ -21,18 +20,7 @@ var static embed.FS
 //go:embed templates/*
 var templates embed.FS
 
-var logger *logrus.Logger
-
 func main() {
-
-	// setup logger
-	logger = logrus.New()
-	logger.SetLevel(logrus.DebugLevel)
-	logger.SetFormatter(&formatter.Formatter{
-		HideKeys:        false,
-		TimestampFormat: "[2006-01-02 15:04:05]",
-	})
-	logger.Out = os.Stdout
 
 	// If no data folder, create one
 	if _, err := os.Stat("./data"); os.IsNotExist(err) {
@@ -40,12 +28,6 @@ func main() {
 		if err != nil {
 			return
 		}
-	}
-
-	// Load config
-	appConfig, err := config.LoadConfig(logger)
-	if err != nil {
-		logger.Fatal(err)
 	}
 
 	// init gin
@@ -65,30 +47,33 @@ func main() {
 	r.Use(utils.StaticServer("/static", http.FS(static)))
 
 	// setup logger
-	r.Use(utils.LoggerMiddleware(logger))
+	r.Use(utils.LoggerMiddleware())
 
 	// setup webdav
 	r.Use(utils.DavServer(
 		"/dav",
 		"./data",
 		func(c *gin.Context) bool {
-			return auth.BasicAuth(c, appConfig)
+			return auth.BasicAuth(c)
 		},
 		func(req *http.Request, err error) {
-			logger.Error(err)
+			Logger.Error(err)
 		}),
 	)
 
 	if gin.Mode() == gin.DebugMode {
-		routes.DebugRoute(r, appConfig, logger)
+		routes.DebugRoute(r)
 	}
+
+	routes.RootRoute(r)
+	routes.ApiRoute(r)
 
 	// run
 	srv := &http.Server{
-		Addr:    appConfig.Server.Listen + ":" + strconv.Itoa(appConfig.Server.Port),
+		Addr:    AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port),
 		Handler: r,
 	}
 	srv.SetKeepAlivesEnabled(true)
-	logger.Info("Listening on " + appConfig.Server.Listen + ":" + strconv.Itoa(appConfig.Server.Port))
-	logger.Fatal(srv.ListenAndServe())
+	Logger.Info("Listening on " + AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port))
+	Logger.Fatal(srv.ListenAndServe())
 }

@@ -2,28 +2,28 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 	"timenoteWeb/auth"
-	"timenoteWeb/config"
+	. "timenoteWeb/config"
 	"timenoteWeb/loader/jsonLoader"
+	. "timenoteWeb/logger"
 	"timenoteWeb/model"
 )
 
-func DebugRoute(r *gin.Engine, config *config.Config, logger *logrus.Logger) {
+func DebugRoute(r *gin.Engine) {
 
-	debug := r.Group("/debug", auth.BasicAuthFunc(config))
+	debug := r.Group("/debug", auth.CookieTokenAuth())
 
 	debug.GET("/data", func(context *gin.Context) {
 		context.JSON(http.StatusOK,
-			jsonLoader.LoadLastJSONFile(logger))
+			jsonLoader.LoadLastJSONFile(Logger))
 	})
 	debug.GET("/", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "debug_index.html", jsonLoader.LoadLastJSONFile(logger))
+		context.HTML(http.StatusOK, "debug_index.html", jsonLoader.LoadLastJSONFile(Logger))
 	})
 	debug.GET("/note/:id", func(context *gin.Context) {
-		data := jsonLoader.LoadLastJSONFile(logger)
+		data := jsonLoader.LoadLastJSONFile(Logger)
 		var opt model.NoteData
 		for _, note := range data.Notes {
 			if strconv.FormatInt(note.ID, 10) == context.Param("id") {
@@ -49,11 +49,11 @@ func DebugRoute(r *gin.Engine, config *config.Config, logger *logrus.Logger) {
 		})
 	})
 	debug.GET("/config", func(context *gin.Context) {
-		context.JSON(http.StatusOK, config)
+		context.JSON(http.StatusOK, AppConfig)
 	})
 	debug.GET("/count", func(context *gin.Context) {
 		context.JSON(http.StatusOK, func() gin.H {
-			data := jsonLoader.LoadLastJSONFile(logger)
+			data := jsonLoader.LoadLastJSONFile(Logger)
 			return gin.H{
 				"source":      data.Source,
 				"notes":       data.NoteCount(),

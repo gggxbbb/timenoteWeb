@@ -4,9 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"time"
+	. "timenoteWeb/logger"
 )
 
-func LoggerMiddleware(logger *logrus.Logger) gin.HandlerFunc {
+func LoggerMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Start timer
 		start := time.Now()
@@ -29,7 +30,7 @@ func LoggerMiddleware(logger *logrus.Logger) gin.HandlerFunc {
 			path = path + "?" + raw
 		}
 
-		logger.WithFields(logrus.Fields{
+		Logger.WithFields(logrus.Fields{
 			"status_code": statusCode,
 			"latency":     latency,
 			"client_ip":   clientIP,
