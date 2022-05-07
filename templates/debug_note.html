@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> {{ .Title }} -- Debug</title>
+    <title> {{ .title }} -- Debug</title>
 </head>
 <body>
 
-<h1>{{ .Title }}</h1>
+<h1>{{ .title }}</h1>
 
-<p><small>{{ .CategoryName }} | {{ .Time }}</small></p>
-<p><small>Mood: {{ .Mood }} | Weather: {{ .Weather }}</small></p>
-<p><small>{{ .Location }}</small></p>
+<p><small>{{ .category }} | {{ .time }}</small></p>
+<p><small>Mood: {{ .mood }} | Weather: {{ .weather }}</small></p>
+<p><small>{{ .location }}</small></p>
 
-<pre>{{ .Content }}</pre>
+<pre>{{ .content }}</pre>
 
 </body>
 </html>

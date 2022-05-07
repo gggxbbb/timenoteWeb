@@ -6,10 +6,11 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"strings"
+	"timenoteWeb/model"
 )
 
-func loadRawData(filename string) RawData {
-	var data RawData
+func loadRawData(filename string) model.RawData {
+	var data model.RawData
 
 	// read the file
 	file, err := ioutil.ReadFile(filename)
@@ -23,17 +24,17 @@ func loadRawData(filename string) RawData {
 	return data
 }
 
-func LoadGeneralData(filename string) GeneralData {
-	var data RawData
+func LoadGeneralData(filename string) model.GeneralData {
+	var data model.RawData
 
-	var generalData GeneralData
+	var generalData model.GeneralData
 
 	data = loadRawData(filename)
 
 	for _, v := range data.Tables {
 		if v.Name == "note" {
 			for _, v2 := range v.Data {
-				generalData.Notes = append(generalData.Notes, NoteData{
+				generalData.Notes = append(generalData.Notes, model.NoteData{
 					CategoryID:   v2.CategoryID,
 					CategoryName: v2.CategoryName,
 					Content:      v2.Content,
@@ -50,7 +51,7 @@ func LoadGeneralData(filename string) GeneralData {
 			}
 		} else if v.Name == "category" {
 			for _, v2 := range v.Data {
-				generalData.Categories = append(generalData.Categories, CategoryData{
+				generalData.Categories = append(generalData.Categories, model.CategoryData{
 					BgColor:          v2.BgColor,
 					CategoryDesc:     v2.CategoryDesc,
 					CategoryName:     v2.CategoryName,
@@ -64,7 +65,7 @@ func LoadGeneralData(filename string) GeneralData {
 			}
 		} else if v.Name == "todo" {
 			for _, v2 := range v.Data {
-				generalData.Todos = append(generalData.Todos, TodoData{
+				generalData.Todos = append(generalData.Todos, model.TodoData{
 					ColorIndex: v2.ColorIndex,
 					ID:         v2.ID,
 					Location:   v2.Location,
@@ -81,9 +82,9 @@ func LoadGeneralData(filename string) GeneralData {
 	return generalData
 }
 
-func LoadLastJSONFile(logger *logrus.Logger) GeneralData {
+func LoadLastJSONFile(logger *logrus.Logger) model.GeneralData {
 
-	var data GeneralData
+	var data model.GeneralData
 
 	//find last modified json file in ./data/timeNote/
 	files, err := ioutil.ReadDir("./data/timeNote/")
