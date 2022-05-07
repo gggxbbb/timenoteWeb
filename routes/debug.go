@@ -32,4 +32,7 @@ func DebugRoute(r *gin.Engine, config *config.Config, logger *logrus.Logger) {
 		}
 		context.HTML(http.StatusOK, "debug_note.html", opt)
 	})
+	debug.GET("/config", func(context *gin.Context) {
+		context.JSON(http.StatusOK, config)
+	})
 }

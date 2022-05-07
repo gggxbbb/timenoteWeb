@@ -7,7 +7,7 @@ import (
 
 func BasicAuth(c *gin.Context, config *config.Config) bool {
 	username, password, ok := c.Request.BasicAuth()
-	if !ok || username != config.Username || password != config.Password {
+	if !ok || username != config.Admin.Username || password != config.Admin.Password {
 		c.AbortWithStatus(401)
 		return false
 	}
@@ -16,6 +16,6 @@ func BasicAuth(c *gin.Context, config *config.Config) bool {
 
 func BasicAuthFunc(config *config.Config) gin.HandlerFunc {
 	return gin.BasicAuth(gin.Accounts{
-		config.Username: config.Password,
+		config.Admin.Username: config.Admin.Password,
 	})
 }

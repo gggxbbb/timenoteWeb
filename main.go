@@ -12,7 +12,6 @@ import (
 	"timenoteWeb/config"
 	"timenoteWeb/routes"
 	"timenoteWeb/utils"
-	"timenoteWeb/webdav"
 )
 
 //go:embed static/*
@@ -38,10 +37,11 @@ func main() {
 	}
 
 	// Load config
-	appConfig, err := config.LoadConfig()
+	appConfig, err := config.LoadConfig(logger)
 	if err != nil {
 		logger.Fatal(err)
 	}
+
 	// init gin
 	r := gin.Default()
 
@@ -52,14 +52,14 @@ func main() {
 	}
 	r.SetHTMLTemplate(templates)
 
-	// load static files
-	r.StaticFS("/static/", http.FS(static))
+	// setup static files
+	r.Use(utils.StaticServer("/static", http.FS(static)))
 
-	//setup logger
+	// setup logger
 	r.Use(utils.LoggerMiddleware(logger))
 
 	// setup webdav
-	r.Use(webdav.DavServer(
+	r.Use(utils.DavServer(
 		"/dav",
 		"./data",
 		func(c *gin.Context) bool {
@@ -76,10 +76,10 @@ func main() {
 
 	// run
 	srv := &http.Server{
-		Addr:    appConfig.Listen + ":" + strconv.Itoa(appConfig.Port),
+		Addr:    appConfig.Server.Listen + ":" + strconv.Itoa(appConfig.Server.Port),
 		Handler: r,
 	}
 	srv.SetKeepAlivesEnabled(true)
-	logger.Info("Listening on " + appConfig.Listen + ":" + strconv.Itoa(appConfig.Port))
+	logger.Info("Listening on " + appConfig.Server.Listen + ":" + strconv.Itoa(appConfig.Server.Port))
 	logger.Fatal(srv.ListenAndServe())
 }
