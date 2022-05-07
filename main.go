@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"github.com/antonfisher/nested-logrus-formatter"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"html/template"
@@ -24,8 +25,13 @@ var logger *logrus.Logger
 
 func main() {
 
+	// setup logger
 	logger = logrus.New()
 	logger.SetLevel(logrus.DebugLevel)
+	logger.SetFormatter(&formatter.Formatter{
+		HideKeys:        false,
+		TimestampFormat: "[2006-01-02 15:04:05]",
+	})
 	logger.Out = os.Stdout
 
 	// If no data folder, create one
@@ -43,7 +49,10 @@ func main() {
 	}
 
 	// init gin
-	r := gin.Default()
+	r := gin.New()
+
+	// setup recovery
+	r.Use(gin.Recovery())
 
 	// load templates
 	templates, err := template.ParseFS(templates, "templates/*.html")
