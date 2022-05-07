@@ -15,8 +15,8 @@ import (
 	"timenoteWeb/webdav"
 )
 
-//go:embed assets/*
-var assets embed.FS
+//go:embed static/*
+var static embed.FS
 
 //go:embed templates/*
 var templates embed.FS
@@ -52,8 +52,8 @@ func main() {
 	}
 	r.SetHTMLTemplate(templates)
 
-	// load assets files
-	r.StaticFS("/assets/", http.FS(assets))
+	// load static files
+	r.StaticFS("/static/", http.FS(static))
 
 	//setup logger
 	r.Use(utils.LoggerMiddleware(logger))
