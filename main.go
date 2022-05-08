@@ -30,6 +30,13 @@ func main() {
 		}
 	}
 
+	// setup debug mode
+	if AppConfig.Server.Debug {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	// init gin
 	r := gin.New()
 
@@ -52,7 +59,7 @@ func main() {
 	// setup webdav
 	r.Use(utils.DavServer(
 		"/dav",
-		"./data",
+		AppConfig.Dav.DataPath,
 		func(c *gin.Context) bool {
 			return auth.BasicAuth(c)
 		},

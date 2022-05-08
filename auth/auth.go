@@ -51,7 +51,7 @@ func CookieTokenAuth(c *gin.Context) bool {
 			}
 		}
 	}
-	Logger.Info("CookieTokenAuthFunc: token not found")
+	Logger.Info("CookieTokenAuth: token not found")
 	return false
 }
 

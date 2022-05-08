@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"io/fs"
 	"io/ioutil"
+	"path/filepath"
 	"strings"
+	. "timenoteWeb/config"
 	. "timenoteWeb/logger"
 	"timenoteWeb/model"
 )
@@ -86,8 +88,10 @@ func LoadLastJSONFile() model.GeneralData {
 
 	var data model.GeneralData
 
+	dataPath := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/")
+
 	//find last modified json file in ./data/timeNote/
-	files, err := ioutil.ReadDir("./data/timeNote/")
+	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
 		panic(err)
 	}
