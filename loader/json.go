@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	. "timenoteWeb/config"
-	. "timenoteWeb/logger"
+	. "timenoteWeb/log"
 	"timenoteWeb/model"
 )
 

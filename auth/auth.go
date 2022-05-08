@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 	. "timenoteWeb/config"
-	. "timenoteWeb/logger"
+	. "timenoteWeb/log"
 )
 
 type Token struct {
@@ -55,6 +55,7 @@ func CookieTokenAuth(c *gin.Context) bool {
 	return false
 }
 
+//goland:noinspection GoUnusedExportedFunction
 func CookieTokenAuthFunc() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := c.Cookie("token")

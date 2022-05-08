@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"time"
-	. "timenoteWeb/logger"
+	. "timenoteWeb/log"
 )
 
 func LoggerMiddleware() gin.HandlerFunc {

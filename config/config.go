@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	. "timenoteWeb/logger"
+	. "timenoteWeb/log"
 )
 
 type ServerConfig struct {

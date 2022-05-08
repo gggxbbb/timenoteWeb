@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"timenoteWeb/auth"
 	. "timenoteWeb/config"
-	. "timenoteWeb/logger"
+	. "timenoteWeb/log"
 	"timenoteWeb/routes"
 	"timenoteWeb/utils"
 )

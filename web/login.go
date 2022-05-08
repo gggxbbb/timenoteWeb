@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"timenoteWeb/auth"
-	. "timenoteWeb/logger"
+	. "timenoteWeb/log"
 )
 
 func LoginPage(c *gin.Context) {
