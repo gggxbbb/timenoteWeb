@@ -1,16 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!doctype html>
+<html lang="zh-CN">
+
+{{block "head.html" .}}{{end}}
+
 <body>
 
-<!--login form-->
-<form action="/login" method="post">
-    <input type="text" name="username" placeholder="username" autocomplete="off">
-    <input type="password" name="password" placeholder="password">
-    <input type="submit" value="login">
-</form>
+<main class="container">
+    {{ block "nav.html" . }}{{ end }}
+    <article class="grid">
+        <div>
+            <hgroup>
+                <h1>登录</h1>
+                <h2>账号、密码见配置文件</h2>
+            </hgroup>
+            <form action="/login" method="post">
+                <input type="text" name="username" placeholder="用户名" id="username" aria-label="用户名"
+                       autocomplete="username" required>
+                <input type="password" name="password" placeholder="密码" aria-label="密码" autocomplete="current-password"
+                       required>
+                <button type="submit" class="contrast">登录</button>
+            </form>
+        </div>
+    </article>
+</main>
+
 </body>
+
 </html>

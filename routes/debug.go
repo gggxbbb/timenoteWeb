@@ -7,23 +7,22 @@ import (
 	"timenoteWeb/auth"
 	. "timenoteWeb/config"
 	"timenoteWeb/loader/jsonLoader"
-	. "timenoteWeb/logger"
 	"timenoteWeb/model"
 )
 
 func DebugRoute(r *gin.Engine) {
 
-	debug := r.Group("/debug", auth.CookieTokenAuth())
+	debug := r.Group("/debug", auth.CookieTokenAuthFunc())
 
 	debug.GET("/data", func(context *gin.Context) {
 		context.JSON(http.StatusOK,
-			jsonLoader.LoadLastJSONFile(Logger))
+			jsonLoader.LoadLastJSONFile())
 	})
 	debug.GET("/", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "debug_index.html", jsonLoader.LoadLastJSONFile(Logger))
+		context.HTML(http.StatusOK, "debug_index.html", jsonLoader.LoadLastJSONFile())
 	})
 	debug.GET("/note/:id", func(context *gin.Context) {
-		data := jsonLoader.LoadLastJSONFile(Logger)
+		data := jsonLoader.LoadLastJSONFile()
 		var opt model.NoteData
 		for _, note := range data.Notes {
 			if strconv.FormatInt(note.ID, 10) == context.Param("id") {
@@ -53,7 +52,7 @@ func DebugRoute(r *gin.Engine) {
 	})
 	debug.GET("/count", func(context *gin.Context) {
 		context.JSON(http.StatusOK, func() gin.H {
-			data := jsonLoader.LoadLastJSONFile(Logger)
+			data := jsonLoader.LoadLastJSONFile()
 			return gin.H{
 				"source":      data.Source,
 				"notes":       data.NoteCount(),

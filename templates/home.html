@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+
+{{ block "head.html" . }}{{ end }}
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>Hi👋, {{ .Nickname }}</h1>
+        <h2>欢迎来到时光记 Web</h2>
+    </hgroup>
+
+    <!-- 基础数据 -->
+    <div>
+        <p>在过去的时光里，你在时光记留下了</p>
+        <div class="grid">
+            <div id="count-note" role="button" class="contrast outline">
+                <hgroup>
+                    <h3>{{ .NoteCount }}</h3>
+                    <h4>篇笔记</h4>
+                </hgroup>
+            </div>
+            <div id="count-category" role="button" class="contrast outline">
+                <hgroup>
+                    <h3>{{ .CategoryCount }}</h3>
+                    <h4>个分类</h4>
+                </hgroup>
+            </div>
+            <div id="count-todo" role="button" class="contrast outline">
+                <hgroup>
+                    <h3>{{ .TodoCountTotal }}</h3>
+                    <h4>个 Todo</h4>
+                </hgroup>
+            </div>
+            <div id="count-todo-done" role="button" class="contrast outline">
+                <hgroup>
+                    <h3>{{ .TodoCountDone }}</h3>
+                    <h4>个已完成的 Todo</h4>
+                </hgroup>
+            </div>
+            <div id="count-todo-undone" role="button" class="contrast outline">
+                <hgroup>
+                    <h3>{{ .TodoCountUndone }}</h3>
+                    <h4>个未完成的 Todo</h4>
+                </hgroup>
+            </div>
+        </div>
+        <p><small><i>根据 {{ .Source }}</i></small></p>
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

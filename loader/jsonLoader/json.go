@@ -2,10 +2,10 @@ package jsonLoader
 
 import (
 	"encoding/json"
-	"github.com/sirupsen/logrus"
 	"io/fs"
 	"io/ioutil"
 	"strings"
+	. "timenoteWeb/logger"
 	"timenoteWeb/model"
 )
 
@@ -82,7 +82,7 @@ func LoadGeneralData(filename string) model.GeneralData {
 	return generalData
 }
 
-func LoadLastJSONFile(logger *logrus.Logger) model.GeneralData {
+func LoadLastJSONFile() model.GeneralData {
 
 	var data model.GeneralData
 
@@ -111,10 +111,10 @@ func LoadLastJSONFile(logger *logrus.Logger) model.GeneralData {
 	}
 
 	if lastModifiedFile == nil {
-		logger.Error("No json file found")
+		Logger.Error("No json file found")
 		return data
 	} else {
-		logger.Info("Last modified json file: " + lastModifiedFile.Name())
+		Logger.Info("Last modified json file: " + lastModifiedFile.Name())
 	}
 
 	data = LoadGeneralData("./data/timeNote/" + lastModifiedFile.Name())

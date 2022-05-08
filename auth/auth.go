@@ -32,29 +32,52 @@ func BasicAuthFunc() gin.HandlerFunc {
 	})
 }
 
-func CookieTokenAuth() gin.HandlerFunc {
+func CookieTokenAuth(c *gin.Context) bool {
+	Logger.Info("CookieTokenAuth: start")
+	token, err := c.Cookie("token")
+	if err != nil {
+		Logger.Info("CookieTokenAuth: no token")
+		return false
+	}
+	for _, t := range tokenPool {
+		if t.Token == token {
+			if t.ExpiresAt.Before(time.Now()) {
+				Logger.Info("CookieTokenAuth: token expired")
+				return false
+			} else {
+				Logger.Info("CookieTokenAuth: token renewed")
+				t.ExpiresAt = time.Now().Add(time.Hour * 24)
+				return true
+			}
+		}
+	}
+	Logger.Info("CookieTokenAuthFunc: token not found")
+	return false
+}
+
+func CookieTokenAuthFunc() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		Logger.Info("CookieTokenAuth: start")
+		Logger.Info("CookieTokenAuthFunc: start")
 		token, err := c.Cookie("token")
 		if err != nil {
-			Logger.Info("CookieTokenAuth: no token")
+			Logger.Info("CookieTokenAuthFunc: no token")
 			c.Redirect(302, "/login")
 			return
 		}
 		for _, t := range tokenPool {
 			if t.Token == token {
 				if t.ExpiresAt.Before(time.Now()) {
-					Logger.Info("CookieTokenAuth: token expired")
+					Logger.Info("CookieTokenAuthFunc: token expired")
 					c.Redirect(302, "/login")
 					return
 				} else {
-					Logger.Info("CookieTokenAuth: token renewed")
+					Logger.Info("CookieTokenAuthFunc: token renewed")
 					t.ExpiresAt = time.Now().Add(time.Hour * 24)
 					return
 				}
 			}
 		}
-		Logger.Info("CookieTokenAuth: token not found")
+		Logger.Info("CookieTokenAuthFunc: token not found")
 		c.Redirect(302, "/login")
 	}
 }
