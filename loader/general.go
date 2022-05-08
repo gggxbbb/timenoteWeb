@@ -1,7 +1,6 @@
-package jsonLoader
+package loader
 
 import (
-	"encoding/json"
 	"io/fs"
 	"io/ioutil"
 	"path/filepath"
@@ -11,27 +10,9 @@ import (
 	"timenoteWeb/model"
 )
 
-func loadRawData(filename string) model.RawData {
-	var data model.RawData
-
-	// read the file
-	file, err := ioutil.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
-
-	//load the data
-	err = json.Unmarshal(file, &data)
-
-	return data
-}
-
-func LoadGeneralData(filename string) model.GeneralData {
-	var data model.RawData
+func loadGeneralData(data model.RawData) model.GeneralData {
 
 	var generalData model.GeneralData
-
-	data = loadRawData(filename)
 
 	for _, v := range data.Tables {
 		if v.Name == "note" {
@@ -84,16 +65,16 @@ func LoadGeneralData(filename string) model.GeneralData {
 	return generalData
 }
 
-func LoadLastJSONFile() model.GeneralData {
+func LoadLastDataFile() model.GeneralData {
 
 	var data model.GeneralData
 
 	dataPath := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/")
 
-	//find last modified json file in ./data/timeNote/
+	//find last modified data file in ./data/timeNote/
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
-		panic(err)
+		Logger.Panic(err)
 	}
 
 	var lastModifiedFile fs.FileInfo
@@ -108,20 +89,26 @@ func LoadLastJSONFile() model.GeneralData {
 			continue
 		}
 
-		if strings.HasSuffix(file.Name(), ".json") && file.ModTime().After(lastModifiedFile.ModTime()) {
+		if (strings.HasSuffix(file.Name(), ".zip") || strings.HasSuffix(file.Name(), ".json")) && file.ModTime().After(lastModifiedFile.ModTime()) {
 			lastModifiedFile = file
 		}
 
 	}
 
 	if lastModifiedFile == nil {
-		Logger.Error("No json file found")
+		Logger.Error("No data file found")
 		return data
 	} else {
-		Logger.Info("Last modified json file: " + lastModifiedFile.Name())
+		Logger.Info("Last modified data file: " + lastModifiedFile.Name())
 	}
 
-	data = LoadGeneralData("./data/timeNote/" + lastModifiedFile.Name())
+	if strings.HasSuffix(lastModifiedFile.Name(), ".zip") {
+		data = loadGeneralZipData("./data/timeNote/" + lastModifiedFile.Name())
+	} else if strings.HasSuffix(lastModifiedFile.Name(), ".json") {
+		data = loadGeneralJsonData("./data/timeNote/" + lastModifiedFile.Name())
+	} else {
+		Logger.Error("Unknown data file type: " + lastModifiedFile.Name())
+	}
 	data.Source = lastModifiedFile.Name()
 
 	return data

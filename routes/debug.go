@@ -6,23 +6,23 @@ import (
 	"strconv"
 	"timenoteWeb/auth"
 	. "timenoteWeb/config"
-	"timenoteWeb/loader/jsonLoader"
+	"timenoteWeb/loader"
 	"timenoteWeb/model"
 )
 
 func DebugRoute(r *gin.Engine) {
 
-	debug := r.Group("/debug", auth.CookieTokenAuthFunc())
+	debug := r.Group("/debug", auth.BasicAuthFunc())
 
 	debug.GET("/data", func(context *gin.Context) {
 		context.JSON(http.StatusOK,
-			jsonLoader.LoadLastJSONFile())
+			loader.LoadLastDataFile())
 	})
 	debug.GET("/", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "debug_index.html", jsonLoader.LoadLastJSONFile())
+		context.HTML(http.StatusOK, "debug_index.html", loader.LoadLastDataFile())
 	})
 	debug.GET("/note/:id", func(context *gin.Context) {
-		data := jsonLoader.LoadLastJSONFile()
+		data := loader.LoadLastJSONFile()
 		var opt model.NoteData
 		for _, note := range data.Notes {
 			if strconv.FormatInt(note.ID, 10) == context.Param("id") {
@@ -52,7 +52,7 @@ func DebugRoute(r *gin.Engine) {
 	})
 	debug.GET("/count", func(context *gin.Context) {
 		context.JSON(http.StatusOK, func() gin.H {
-			data := jsonLoader.LoadLastJSONFile()
+			data := loader.LoadLastJSONFile()
 			return gin.H{
 				"source":      data.Source,
 				"notes":       data.NoteCount(),

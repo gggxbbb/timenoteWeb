@@ -22,7 +22,7 @@ func LoginPage(c *gin.Context) {
 }
 
 func LoginAction(c *gin.Context) {
-	_, success := auth.RequireToken(c)
+	success := auth.RequireToken(c)
 	if !success {
 		c.Redirect(302, "/login")
 	} else {

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"timenoteWeb/auth"
 	. "timenoteWeb/config"
-	"timenoteWeb/loader/jsonLoader"
+	"timenoteWeb/loader"
 )
 
 type HomeData struct {
@@ -24,7 +24,7 @@ func HomePage(c *gin.Context) {
 		c.Redirect(302, "/login")
 	} else {
 		var data HomeData
-		timenoteData := jsonLoader.LoadLastJSONFile()
+		timenoteData := loader.LoadLastDataFile()
 		data.Title = "首页"
 		data.Source = timenoteData.Source
 		data.Nickname = AppConfig.Web.Nickname

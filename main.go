@@ -50,11 +50,14 @@ func main() {
 	}
 	r.SetHTMLTemplate(templates)
 
+	// setup logger
+	r.Use(utils.LoggerMiddleware())
+
 	// setup static files
 	r.Use(utils.StaticServer("/static", http.FS(static)))
 
-	// setup logger
-	r.Use(utils.LoggerMiddleware())
+	// setup assets
+	r.Use(utils.AssetsServer("/assets"))
 
 	// setup webdav
 	r.Use(utils.DavServer(
@@ -64,7 +67,9 @@ func main() {
 			return auth.BasicAuth(c)
 		},
 		func(req *http.Request, err error) {
-			Logger.Error(err)
+			if err != nil {
+				Logger.Error(err.Error())
+			}
 		}),
 	)
 
