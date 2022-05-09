@@ -2,6 +2,8 @@ package model
 
 import (
 	"encoding/json"
+	"github.com/russross/blackfriday/v2"
+	"strings"
 	"time"
 )
 
@@ -118,6 +120,14 @@ func (d NoteData) GetTimeStr() string {
 	timestamp := d.Time / 1000
 	t := time.Unix(timestamp, 0)
 	return t.Format("2006-01-02 15:04:05")
+}
+
+func (d NoteData) GetContentHTML() string {
+	data := string(blackfriday.Run([]byte(d.Content),
+		blackfriday.WithExtensions(blackfriday.CommonExtensions),
+	))
+	data = strings.Replace(data, "src=\"assets://", "src=\"/assets", -1)
+	return data
 }
 
 type CategoryData struct {

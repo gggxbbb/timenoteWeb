@@ -14,10 +14,12 @@ import (
 )
 
 //go:embed static/*
-var static embed.FS
+var staticData embed.FS
 
 //go:embed templates/*
-var templates embed.FS
+var templatesData embed.FS
+
+func unescaped(x string) interface{} { return template.HTML(x) }
 
 func main() {
 
@@ -46,7 +48,9 @@ func main() {
 	r.Use(gin.Recovery())
 
 	// 加载前端页面模板
-	templates, err := template.ParseFS(templates, "templates/*.html")
+	templates := template.New("")
+	templates = templates.Funcs(template.FuncMap{"unescaped": unescaped})
+	templates, err := templates.ParseFS(templatesData, "templates/*.html")
 	if err != nil {
 		panic(err)
 	}
@@ -56,7 +60,7 @@ func main() {
 	r.Use(utils.LoggerMiddleware())
 
 	// 初始化静态文件
-	r.Use(utils.StaticServer("/static", http.FS(static)))
+	r.Use(utils.StaticServer("/static", http.FS(staticData)))
 
 	// 初始化时光记 assets 文件服务
 	r.Use(utils.AssetsServer("/assets"))

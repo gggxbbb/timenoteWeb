@@ -40,7 +40,7 @@ func DebugRoute(r *gin.Engine) {
 					return "nil"
 				}
 			}(),
-			"content":  opt.Content,
+			"content":  opt.GetContentHTML(),
 			"time":     opt.GetTimeStr(),
 			"mood":     opt.GetMoodStr(),
 			"weather":  opt.GetWeatherStr(),

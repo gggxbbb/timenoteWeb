@@ -12,7 +12,7 @@
 <p><small>Mood: {{ .mood }} | Weather: {{ .weather }}</small></p>
 <p><small>{{ .location }}</small></p>
 
-<pre>{{ .content }}</pre>
+<article>{{ .content|unescaped }}</article>
 
 </body>
 </html>
