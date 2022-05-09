@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
+// Logger 公共 logger
 var Logger *logrus.Logger
 
 func init() {
-	// setup logger
 	Logger = logrus.New()
 	Logger.SetLevel(logrus.DebugLevel)
 	Logger.SetFormatter(&formatter.Formatter{

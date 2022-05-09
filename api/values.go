@@ -6,6 +6,7 @@ import (
 	"timenoteWeb/model"
 )
 
+// GetValues 返回基本常量
 func GetValues(context *gin.Context) {
 	context.JSON(http.StatusOK, Rep{
 		Code:   http.StatusOK,

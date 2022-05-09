@@ -11,16 +11,15 @@ import (
 	"timenoteWeb/model"
 )
 
+// loadGeneralJsonData 将指定 json 文件加载为 model.GeneralData
 func loadGeneralJsonData(filename string) model.GeneralData {
 	var data model.RawData
 
-	// read the file
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		Logger.Panic(err)
 	}
 
-	//load the data
 	err = json.Unmarshal(file, &data)
 	if err != nil {
 		Logger.Panic(err)
@@ -29,13 +28,14 @@ func loadGeneralJsonData(filename string) model.GeneralData {
 	return loadGeneralData(data)
 }
 
+// LoadLastJSONFile 加载最新的 json 文件
 func LoadLastJSONFile() model.GeneralData {
 
+	log := logging.WithField("源", "LoadLastJSONFile")
 	var data model.GeneralData
 
 	dataPath := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/")
 
-	//find last modified json file in ./data/timeNote/
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
 		Logger.Panic(err)
@@ -60,13 +60,13 @@ func LoadLastJSONFile() model.GeneralData {
 	}
 
 	if lastModifiedFile == nil {
-		Logger.Error("No json file found")
+		log.Error("未找到最新的 json 文件")
 		return data
 	} else {
-		Logger.Info("Last modified json file: " + lastModifiedFile.Name())
+		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的 json 文件")
 	}
 
-	data = loadGeneralJsonData("./data/timeNote/" + lastModifiedFile.Name())
+	data = loadGeneralJsonData(filepath.Join(AppConfig.Dav.DataPath, "/timeNote/", lastModifiedFile.Name()))
 	data.Source = lastModifiedFile.Name()
 
 	return data

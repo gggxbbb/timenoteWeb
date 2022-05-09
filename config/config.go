@@ -1,3 +1,4 @@
+// Package config 用于处理程序配置文件
 package config
 
 import (
@@ -35,9 +36,14 @@ type Config struct {
 
 var AppConfig *Config
 
+// logging 包内私有 logging
+var logging = Logger.WithField("包", "config")
+
 func init() {
 
-	Logger.Info("init config")
+	log := logging.WithField("源", "init")
+
+	log.Info("初始化配置")
 
 	viper.SetDefault("server", ServerConfig{
 		Listen: "0.0.0.0",
@@ -62,7 +68,7 @@ func init() {
 
 	err := viper.SafeWriteConfig()
 	if err == nil {
-		Logger.Info("Can't find config file, create a new one")
+		log.Info("找不到配置文件, 已创建默认配置文件")
 	}
 
 	err = viper.ReadInConfig()
@@ -74,20 +80,21 @@ func init() {
 
 	err = viper.Unmarshal(&AppConfig)
 	if err != nil {
-		Logger.Fatal("Unmarshal config failed: %s", err.Error())
+		log.WithError(err).Fatal("解析配置文件失败")
 	}
 
-	Logger.Info("config loaded, initializing server")
-
 	viper.OnConfigChange(func(e fsnotify.Event) {
+		log := logging.WithField("源", "OnConfigChange")
 		err := viper.Unmarshal(&AppConfig)
-		Logger.Info("Config file changed: ", e.Name)
-		Logger.Info("If you changed the config of SERVER, you need to restart the this application.")
+		log.WithField("文件", e.Name).Info("配置文件变更")
+		log.Warn("如果修改了 SERVER 或 DAV 配置, 需要重启服务")
+		log.Warn("如果修改了 DAV 配置, 需要手动迁移文件")
 		if err != nil {
-			Logger.Error("Unmarshal config file failed: ", err)
+			log.WithError(err).Fatal("解析配置文件失败")
 		}
 	})
 	viper.WatchConfig()
 
+	log.Info("配置初始化完成, 启动服务器")
 	return
 }

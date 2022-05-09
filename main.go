@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"timenoteWeb/auth"
 	. "timenoteWeb/config"
 	. "timenoteWeb/log"
 	"timenoteWeb/routes"
@@ -22,70 +21,71 @@ var templates embed.FS
 
 func main() {
 
-	// If no data folder, create one
-	if _, err := os.Stat("./data"); os.IsNotExist(err) {
-		err := os.Mkdir("./data", 0777)
+	log := Logger.WithField("源", "main")
+
+	// 初始化数据目录
+	if _, err := os.Stat(AppConfig.Dav.DataPath); os.IsNotExist(err) {
+		err := os.Mkdir(AppConfig.Dav.DataPath, 0777)
 		if err != nil {
-			return
+			log.WithError(err).Fatal("无法新建数据目录!")
 		}
 	}
 
-	// setup debug mode
+	// 配置调试模式
 	if AppConfig.Server.Debug {
 		gin.SetMode(gin.DebugMode)
+		log.Warn("调试模式已开启!")
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	// init gin
+	// 初始化 gin
 	r := gin.New()
 
-	// setup recovery
+	// 使用 gin 自带 Recovery
 	r.Use(gin.Recovery())
 
-	// load templates
+	// 加载前端页面模板
 	templates, err := template.ParseFS(templates, "templates/*.html")
 	if err != nil {
 		panic(err)
 	}
 	r.SetHTMLTemplate(templates)
 
-	// setup logger
+	// 初始化日志
 	r.Use(utils.LoggerMiddleware())
 
-	// setup static files
+	// 初始化静态文件
 	r.Use(utils.StaticServer("/static", http.FS(static)))
 
-	// setup assets
+	// 初始化时光记 assets 文件服务
 	r.Use(utils.AssetsServer("/assets"))
 
-	// setup webdav
+	// 初始化 WebDav 服务
 	r.Use(utils.DavServer(
 		"/dav",
-		AppConfig.Dav.DataPath,
-		func(c *gin.Context) bool {
-			return auth.BasicAuth(c)
-		},
-		func(req *http.Request, err error) {
-			if err != nil {
-				Logger.Error(err.Error())
-			}
-		}),
+		AppConfig.Dav.DataPath),
 	)
 
+	// 应用 debug 路由
 	if gin.Mode() == gin.DebugMode {
 		routes.DebugRoute(r)
 	}
 
+	// 应用根路由
 	routes.RootRoute(r)
+	// 应用 API 路由
 	routes.ApiRoute(r)
 
-	// run
+	// Run
 	srv := &http.Server{
 		Addr:    AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port),
 		Handler: r,
 	}
 	srv.SetKeepAlivesEnabled(true)
-	Logger.Info("Listening on " + AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port))
-	Logger.Fatal(srv.ListenAndServe())
+	log.Info("Listening on " + AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port))
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.WithError(err).Fatal("服务器启动失败!")
+	}
 }

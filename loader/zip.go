@@ -15,11 +15,11 @@ import (
 )
 
 func loadGeneralZipData(filename string) model.GeneralData {
+	log := logging.WithField("源", "loadGeneralZipData")
 	var rawData model.RawData
-	// read the zip file
 	zipReader, err := zip.OpenReader(filename)
 	if err != nil {
-		Logger.WithError(err).Panic("Failed to open zip file")
+		log.WithError(err).Error("打开压缩文件失败")
 	}
 	defer func(zipReader *zip.ReadCloser) {
 		_ = zipReader.Close()
@@ -27,29 +27,25 @@ func loadGeneralZipData(filename string) model.GeneralData {
 
 	var buf bytes.Buffer
 
-	// iterate through the files
 	for _, file := range zipReader.File {
-		// read the file
 		if file.Name == "backup/data.json" {
-			// read the file
 			fileReader, err := file.Open()
 			if err != nil {
-				Logger.WithError(err).Panic("Error opening file: " + file.Name)
+				log.WithError(err).WithField("文件名", file.Name).Error("打开文件失败")
 			}
 
 			_, err = io.CopyN(&buf, fileReader, int64(file.UncompressedSize64))
 
 			if err != nil {
-				Logger.WithError(err).Panic("Error reading file")
+				log.WithError(err).Error("读取文件失败")
 				return model.GeneralData{}
 			}
 		}
 	}
 
-	// parse the json
 	err = json.Unmarshal(buf.Bytes(), &rawData)
 	if err != nil {
-		Logger.WithError(err).Panic("Error unmarshalling json")
+		log.WithError(err).Error("解析 json 失败")
 	}
 	return loadGeneralData(rawData)
 }
@@ -57,11 +53,11 @@ func loadGeneralZipData(filename string) model.GeneralData {
 //goland:noinspection GoUnusedExportedFunction
 func LoadLastZipFile() model.GeneralData {
 
+	log := logging.WithField("源", "LoadLastZipFile")
 	var data model.GeneralData
 
 	dataPath := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/")
 
-	//find last modified zip file in ./data/timeNote/
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
 		Logger.Panic(err)
@@ -86,13 +82,13 @@ func LoadLastZipFile() model.GeneralData {
 	}
 
 	if lastModifiedFile == nil {
-		Logger.Error("No zip file found")
+		log.Error("未找到最新的压缩文件")
 		return data
 	} else {
-		Logger.Info("Last modified zip file: " + lastModifiedFile.Name())
+		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的压缩文件")
 	}
 
-	data = loadGeneralZipData("./data/timeNote/" + lastModifiedFile.Name())
+	data = loadGeneralZipData(filepath.Join(AppConfig.Dav.DataPath, "/timeNote/", lastModifiedFile.Name()))
 	data.Source = lastModifiedFile.Name()
 
 	return data

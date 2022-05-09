@@ -30,13 +30,23 @@ func LoggerMiddleware() gin.HandlerFunc {
 			path = path + "?" + raw
 		}
 
-		Logger.WithFields(logrus.Fields{
-			"status_code": statusCode,
-			"latency":     latency,
-			"client_ip":   clientIP,
-			"method":      method,
-			"path":        path,
-			"comment":     comment,
-		}).Info("Request")
+		if comment == "" {
+			Logger.WithFields(logrus.Fields{
+				"状态码":   statusCode,
+				"耗时":    latency,
+				"来源 IP": clientIP,
+				"请求方式":  method,
+				"请求路径":  path,
+			}).Info("请求已处理")
+		} else {
+			Logger.WithFields(logrus.Fields{
+				"状态码":   statusCode,
+				"耗时":    latency,
+				"来源 IP": clientIP,
+				"请求方式":  method,
+				"请求路径":  path,
+				"错误信息":  comment,
+			}).Warn("请求处理出现问题")
+		}
 	}
 }

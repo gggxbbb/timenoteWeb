@@ -7,6 +7,7 @@ import (
 	. "timenoteWeb/log"
 )
 
+// LoginPage 登录页
 func LoginPage(c *gin.Context) {
 	token, err := c.Cookie("token")
 	if err == nil {
@@ -21,6 +22,7 @@ func LoginPage(c *gin.Context) {
 	})
 }
 
+// LoginAction 登录请求
 func LoginAction(c *gin.Context) {
 	success := auth.RequireToken(c)
 	if !success {

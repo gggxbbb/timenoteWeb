@@ -6,12 +6,11 @@ import (
 	"path/filepath"
 	"strings"
 	. "timenoteWeb/config"
-	. "timenoteWeb/log"
 	"timenoteWeb/model"
 )
 
+// loadGeneralData 将 model.RawData 转换为 model.GeneralData
 func loadGeneralData(data model.RawData) model.GeneralData {
-
 	var generalData model.GeneralData
 
 	for _, v := range data.Tables {
@@ -65,8 +64,9 @@ func loadGeneralData(data model.RawData) model.GeneralData {
 	return generalData
 }
 
+// LoadLastDataFile 加载最新的数据文件
 func LoadLastDataFile() model.GeneralData {
-
+	log := logging.WithField("源", "LoadLastDataFile")
 	var data model.GeneralData
 
 	dataPath := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/")
@@ -74,7 +74,7 @@ func LoadLastDataFile() model.GeneralData {
 	//find last modified data file in ./data/timeNote/
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
-		Logger.Panic(err)
+		log.WithError(err).Error("读取数据文件夹失败")
 	}
 
 	var lastModifiedFile fs.FileInfo
@@ -96,18 +96,20 @@ func LoadLastDataFile() model.GeneralData {
 	}
 
 	if lastModifiedFile == nil {
-		Logger.Error("No data file found")
+		log.Error("未找到最新的数据文件")
 		return data
 	} else {
-		Logger.Info("Last modified data file: " + lastModifiedFile.Name())
+		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的数据文件")
 	}
 
+	path := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/", lastModifiedFile.Name())
+
 	if strings.HasSuffix(lastModifiedFile.Name(), ".zip") {
-		data = loadGeneralZipData("./data/timeNote/" + lastModifiedFile.Name())
+		data = loadGeneralZipData(path)
 	} else if strings.HasSuffix(lastModifiedFile.Name(), ".json") {
-		data = loadGeneralJsonData("./data/timeNote/" + lastModifiedFile.Name())
+		data = loadGeneralJsonData(path)
 	} else {
-		Logger.Error("Unknown data file type: " + lastModifiedFile.Name())
+		log.WithField("文件名", lastModifiedFile.Name()).Error("数据文件后缀不正确")
 	}
 	data.Source = lastModifiedFile.Name()
 

@@ -1,16 +1,28 @@
 package utils
 
 import (
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
+	"timenoteWeb/auth"
 
 	"github.com/gin-gonic/gin"
 	wd "golang.org/x/net/webdav"
 )
 
-func DavServer(prefix string, rootDir string,
-	validator func(c *gin.Context) bool,
-	logger func(req *http.Request, err error)) gin.HandlerFunc {
+func logger(req *http.Request, err error) {
+	log := logging.WithField("源", "DavServer")
+	if err != nil {
+		log.WithError(err).WithFields(logrus.Fields{
+			"来源": req.RemoteAddr,
+			"路径": req.URL.Path,
+			"方法": req.Method,
+		}).Error("WebDav 服务异常!")
+	}
+}
+
+func DavServer(prefix string, rootDir string) gin.HandlerFunc {
+	log := logging.WithField("源", "DavServer")
 	w := wd.Handler{
 		Prefix:     prefix,
 		FileSystem: wd.Dir(rootDir),
@@ -19,7 +31,8 @@ func DavServer(prefix string, rootDir string,
 	}
 	return func(c *gin.Context) {
 		if strings.HasPrefix(c.Request.URL.Path, w.Prefix) {
-			if validator != nil && !validator(c) {
+			if !auth.BasicAuth(c) {
+				log.Warn("无效登录")
 				c.AbortWithStatus(403)
 				return
 			}
