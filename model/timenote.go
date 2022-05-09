@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/russross/blackfriday/v2"
 	"strings"
 	"time"
@@ -124,9 +125,25 @@ func (d NoteData) GetTimeStr() string {
 
 func (d NoteData) GetContentHTML() string {
 	data := string(blackfriday.Run([]byte(d.Content),
-		blackfriday.WithExtensions(blackfriday.CommonExtensions),
-	))
-	data = strings.Replace(data, "src=\"assets://", "src=\"/assets", -1)
+		blackfriday.WithExtensions(blackfriday.CommonExtensions)))
+	pData, err := goquery.NewDocumentFromReader(strings.NewReader(data))
+	if err != nil {
+		return d.Content
+	}
+	pData.Find("img").Each(func(i int, s *goquery.Selection) {
+		src, ok := s.Attr("src")
+		if !ok {
+			return
+		}
+		if strings.HasPrefix(src, "assets://") {
+			newSrc := strings.Replace(src, "assets://", "/assets", -1)
+			s.SetAttr("src", newSrc)
+		}
+	})
+	data, err = pData.Html()
+	if err != nil {
+		return d.Content
+	}
 	return data
 }
 
