@@ -80,13 +80,13 @@ func CookieTokenAuthFunc() gin.HandlerFunc {
 		token, err := c.Cookie("token")
 		if err != nil {
 			log.Info("Cookies 中找不到 token")
-			c.Redirect(302, "/login")
+			c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
 		}
 		for _, t := range tokenPool {
 			if t.Token == token {
 				if t.ExpiresAt.Before(time.Now()) {
 					log.Info("token 已过期")
-					c.Redirect(302, "/login")
+					c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
 				} else {
 					log.Info("token 续订")
 					t.ExpiresAt = time.Now().Add(time.Hour * 24)
@@ -95,7 +95,7 @@ func CookieTokenAuthFunc() gin.HandlerFunc {
 			}
 		}
 		log.Info("token 不存在")
-		c.Redirect(302, "/login")
+		c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
 	}
 }
 
@@ -146,13 +146,13 @@ func RequireToken(c *gin.Context) bool {
 		if err = c.ShouldBindJSON(&data); err != nil {
 			if err = c.ShouldBindXML(&data); err != nil {
 				log.Info("登陆数据解析失败")
-				c.Redirect(302, "/login")
+				c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
 				return false
 			}
 		}
 	}
 	if data.Username != AppConfig.Admin.Username || data.Password != AppConfig.Admin.Password {
-		c.Redirect(302, "/login")
+		c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
 		log.Info("登陆失败")
 		return false
 	} else {

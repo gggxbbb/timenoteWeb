@@ -12,7 +12,11 @@ func LoginPage(c *gin.Context) {
 	if err == nil {
 		if auth.CheckToken(token) {
 			auth.RenewToken(token)
-			c.Redirect(302, "/")
+			redirect := c.Query("redirect")
+			if redirect == "" {
+				redirect = "/"
+			}
+			c.Redirect(302, redirect)
 		}
 	}
 	c.HTML(http.StatusOK, "login.html", basicData{
@@ -26,6 +30,10 @@ func LoginAction(c *gin.Context) {
 	if !success {
 		c.Redirect(302, "/login")
 	} else {
-		c.Redirect(302, "/")
+		redirect := c.Query("redirect")
+		if redirect == "" {
+			redirect = "/"
+		}
+		c.Redirect(302, redirect)
 	}
 }
