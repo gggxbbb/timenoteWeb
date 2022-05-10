@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"timenoteWeb/auth"
-	. "timenoteWeb/log"
 )
 
 // LoginPage 登录页
@@ -12,12 +11,11 @@ func LoginPage(c *gin.Context) {
 	token, err := c.Cookie("token")
 	if err == nil {
 		if auth.CheckToken(token) {
-			Logger.Info("Login successful, renew token")
 			auth.RenewToken(token)
 			c.Redirect(302, "/")
 		}
 	}
-	c.HTML(http.StatusOK, "login.html", BasicData{
+	c.HTML(http.StatusOK, "login.html", basicData{
 		Title: "登录",
 	})
 }

@@ -25,6 +25,11 @@
                     <h3>{{ .NoteCount }}</h3>
                     <h4>篇笔记</h4>
                 </hgroup>
+                <script>
+                    document.getElementById("count-note").addEventListener("click", function () {
+                        window.location.href = "/notes";
+                    });
+                </script>
             </div>
             <div id="count-category" role="button" class="contrast outline">
                 <hgroup>

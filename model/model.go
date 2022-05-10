@@ -37,11 +37,12 @@ var (
 		WeatherRainy:  "下雨",
 	}
 	MoodStrMap = map[string]string{
-		MoodHappy:  "开心",
-		MoodSad:    "难过",
-		MoodAngry:  "生气",
-		MoodGloomy: "阴沉",
-		MoodNormal: "一般",
+		MoodHappy:   "开心",
+		MoodSad:     "难过",
+		MoodAngry:   "生气",
+		MoodGloomy:  "阴沉",
+		MoodNormal:  "一般",
+		MoodUnknown: "未知",
 	}
 )
 

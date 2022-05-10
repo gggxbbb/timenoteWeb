@@ -7,15 +7,14 @@ import (
 	"timenoteWeb/loader"
 )
 
-// HomeData 主页数据
-type HomeData struct {
-	BasicData
-	Source          string `json:"source"`
-	NoteCount       int    `json:"note_count"`
-	CategoryCount   int    `json:"category_count"`
-	TodoCountTotal  int    `json:"todo_count_total"`
-	TodoCountDone   int    `json:"todo_count_done"`
-	TodoCountUndone int    `json:"todo_count_undone"`
+// homeData 主页数据
+type homeData struct {
+	basicData
+	NoteCount       int `json:"note_count"`
+	CategoryCount   int `json:"category_count"`
+	TodoCountTotal  int `json:"todo_count_total"`
+	TodoCountDone   int `json:"todo_count_done"`
+	TodoCountUndone int `json:"todo_count_undone"`
 }
 
 // HomePage 主页
@@ -24,7 +23,7 @@ func HomePage(c *gin.Context) {
 	if !ifLogin {
 		c.Redirect(302, "/login")
 	} else {
-		var data HomeData
+		var data homeData
 		timenoteData := loader.LoadLastDataFile()
 		data.Title = "首页"
 		data.Source = timenoteData.Source

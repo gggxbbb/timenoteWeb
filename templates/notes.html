@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+
+{{ block "head.html" . }}{{ end }}
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>Hi👋, {{ .Nickname }}</h1>
+        <h2>这里是你写下的日记</h2>
+    </hgroup>
+
+    <!-- 日记列表 -->
+    <div>
+        <ul>
+            {{ range .Notes }}
+            <li>
+                <hgroup>
+                    <h3><a href="/notes/{{ .ID }}">{{ .Title }}</a></h3>
+                    <h4>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span></h4>
+                </hgroup>
+            </li>
+            {{ end }}
+        </ul>
+        <p><small><i>根据 {{ .Source }}</i></small></p>
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

@@ -91,6 +91,7 @@ func CookieTokenAuthFunc() gin.HandlerFunc {
 					log.Info("token 续订")
 					t.ExpiresAt = time.Now().Add(time.Hour * 24)
 				}
+				return
 			}
 		}
 		log.Info("token 不存在")
