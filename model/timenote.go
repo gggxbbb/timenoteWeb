@@ -8,33 +8,6 @@ import (
 	"time"
 )
 
-//goland:noinspection GoUnusedConst
-const (
-	// WeatherCloudy 阴
-	WeatherCloudy = 104
-	// WeatherSunny 晴
-	WeatherSunny = 150
-	// WeatherWindy 大风
-	WeatherWindy = 250
-	// WeatherSnowy 下雪
-	WeatherSnowy = 350
-	// WeatherRainy 下雨
-	WeatherRainy = 450
-
-	// MoodUnknown 未知
-	MoodUnknown = "MOOD_UNKNOWN"
-	// MoodHappy 开心
-	MoodHappy = "MOOD_HAPPY"
-	// MoodSad 难过
-	MoodSad = "MOOD_SAD"
-	// MoodAngry 生气
-	MoodAngry = "MOOD_ANGRY"
-	// MoodGloomy 阴沉
-	MoodGloomy = "MOOD_GLOOMY"
-	// MoodNormal 一般
-	MoodNormal = "MOOD_NORMAL"
-)
-
 type RawData struct {
 	Version  int    `json:"version"`
 	Platform string `json:"platform"`
@@ -84,43 +57,31 @@ type NoteData struct {
 }
 
 func (d NoteData) GetWeatherStr() string {
-	switch d.Weather {
-	case WeatherCloudy:
-		return "阴"
-	case WeatherSunny:
-		return "晴"
-	case WeatherWindy:
-		return "大风"
-	case WeatherSnowy:
-		return "下雪"
-	case WeatherRainy:
-		return "下雨"
-	default:
-		return "未知"
-	}
+	return WeatherStrMap[d.Weather]
+}
+
+func (d NoteData) GetWeatherEmoji() string {
+	return WeatherEmojiMap[d.Weather]
 }
 
 func (d NoteData) GetMoodStr() string {
-	switch d.Mood {
-	case MoodHappy:
-		return "开心"
-	case MoodSad:
-		return "难过"
-	case MoodAngry:
-		return "生气"
-	case MoodGloomy:
-		return "阴沉"
-	case MoodNormal:
-		return "一般"
-	default:
-		return "未知"
-	}
+	return MoodStrMap[d.Mood]
+}
+
+func (d NoteData) GetMoodEmoji() string {
+	return MoodEmojiMap[d.Mood]
 }
 
 func (d NoteData) GetTimeStr() string {
 	timestamp := d.Time / 1000
 	t := time.Unix(timestamp, 0)
 	return t.Format("2006-01-02 15:04:05")
+}
+
+func (d NoteData) GetDateStr() string {
+	timestamp := d.Time / 1000
+	t := time.Unix(timestamp, 0)
+	return t.Format("2006-01-02")
 }
 
 func (d NoteData) GetContentHTML() string {
