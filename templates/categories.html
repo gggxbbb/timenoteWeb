@@ -13,19 +13,17 @@
     <!-- 欢迎 -->
     <hgroup>
         <h1>Hi👋, {{ .Nickname }}</h1>
-        <h2>这里是你写下的日记</h2>
+        <h2>这里是你设下的的分类</h2>
     </hgroup>
 
-    <!-- 日记列表 -->
+    <!-- 分类列表 -->
     <div>
         <ul>
-            {{ range .Notes }}
+            {{ range .Categories }}
                 <li>
                     <hgroup>
-                        <h3><a href="/notes/{{ .ID }}">{{ .Title }}</a></h3>
-                        <h4>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
-                                    data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
-                                    href="/categories/{{ .CategoryID }}">{{ .CategoryName }}</a></h4>
+                        <h3><a href="/categories/{{ .ID }}">{{ .Name }}</a></h3>
+                        <h4>子分类: {{ .SubcategoryCount }} | 日记: {{ .NoteCount }}</h4>
                     </hgroup>
                 </li>
             {{ end }}

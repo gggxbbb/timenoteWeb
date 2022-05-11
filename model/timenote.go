@@ -223,3 +223,23 @@ func (c GeneralData) FindParentCategory(childCategory CategoryData) (CategoryDat
 	}
 	return CategoryData{}, false
 }
+
+func (c GeneralData) FindSubCategory(parentCategory CategoryData) []CategoryData {
+	var subCategories []CategoryData
+	for _, category := range c.Categories {
+		if category.ParentCategoryID == parentCategory.ID {
+			subCategories = append(subCategories, category)
+		}
+	}
+	return subCategories
+}
+
+func (c GeneralData) FindSubNote(category CategoryData) []NoteData {
+	var subNotes []NoteData
+	for _, note := range c.Notes {
+		if note.CategoryID == category.ID {
+			subNotes = append(subNotes, note)
+		}
+	}
+	return subNotes
+}

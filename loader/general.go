@@ -13,6 +13,21 @@ import (
 func loadGeneralData(data model.RawData) model.GeneralData {
 	var generalData model.GeneralData
 
+	// 未分类
+	var defaultCategory = model.CategoryData{
+		BgColor:          0,
+		CategoryDesc:     "",
+		CategoryName:     "未分类",
+		ID:               -1,
+		IsDefault:        0,
+		IsLock:           0,
+		NoteCount:        0,
+		ParentCategoryID: 0,
+		Time:             0,
+	}
+
+	generalData.Categories = append(generalData.Categories, defaultCategory)
+
 	for _, v := range data.Tables {
 		if v.Name == "note" {
 			for _, v2 := range v.Data {

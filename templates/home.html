@@ -36,6 +36,11 @@
                     <h3>{{ .CategoryCount }}</h3>
                     <h4>个分类</h4>
                 </hgroup>
+                <script>
+                    document.getElementById("count-category").addEventListener("click", function () {
+                        window.location.href = "/categories";
+                    });
+                </script>
             </div>
             <div id="count-todo" role="button" class="contrast outline">
                 <hgroup>

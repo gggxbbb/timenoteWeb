@@ -82,6 +82,8 @@ func main() {
 	routes.ApiRoute(r)
 	// 应用 Notes 路由
 	routes.NotesRoute(r)
+	// 应用 Categories 路由
+	routes.CategoriesRoute(r)
 
 	// Run
 	srv := &http.Server{

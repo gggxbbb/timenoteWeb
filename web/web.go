@@ -6,3 +6,60 @@ type basicData struct {
 	Nickname string `json:"nickname"`
 	Source   string `json:"source"`
 }
+
+type simpleNote struct {
+	ID           string `json:"id"`
+	Title        string `json:"title"`
+	Date         string `json:"date"`
+	Weather      string `json:"weather"`
+	WeatherEmoji string `json:"weatherEmoji"`
+	Mood         string `json:"mood"`
+	MoodEmoji    string `json:"moodEmoji"`
+	CategoryName string `json:"categoryName"`
+	CategoryID   string `json:"categoryID"`
+}
+
+type noteListData struct {
+	basicData
+	Notes []simpleNote `json:"notes"`
+}
+
+type note struct {
+	simpleNote
+	Content string `json:"content"`
+}
+
+type notePageData struct {
+	basicData
+	Note note `json:"note"`
+}
+
+type simpleCategory struct {
+	ID               string `json:"id"`
+	Name             string `json:"name"`
+	ParentCategoryID string `json:"parentCategoryID"`
+	SubcategoryCount int    `json:"subcategoryCount"`
+	NoteCount        int    `json:"noteCount"`
+}
+
+type categoryListData struct {
+	basicData
+	Categories []simpleCategory `json:"categories"`
+}
+
+type categoryPageData struct {
+	basicData
+	simpleCategory
+	Notes         []simpleNote     `json:"notes"`
+	Subcategories []simpleCategory `json:"subcategories"`
+}
+
+// homeData 主页数据
+type homeData struct {
+	basicData
+	NoteCount       int `json:"note_count"`
+	CategoryCount   int `json:"category_count"`
+	TodoCountTotal  int `json:"todo_count_total"`
+	TodoCountDone   int `json:"todo_count_done"`
+	TodoCountUndone int `json:"todo_count_undone"`
+}

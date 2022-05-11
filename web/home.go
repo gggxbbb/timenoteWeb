@@ -7,16 +7,6 @@ import (
 	"timenoteWeb/loader"
 )
 
-// homeData 主页数据
-type homeData struct {
-	basicData
-	NoteCount       int `json:"note_count"`
-	CategoryCount   int `json:"category_count"`
-	TodoCountTotal  int `json:"todo_count_total"`
-	TodoCountDone   int `json:"todo_count_done"`
-	TodoCountUndone int `json:"todo_count_undone"`
-}
-
 // HomePage 主页
 func HomePage(c *gin.Context) {
 	ifLogin := auth.CookieTokenAuth(c)
