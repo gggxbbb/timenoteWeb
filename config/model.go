@@ -20,9 +20,15 @@ type WebConfig struct {
 	Title    string `json:"title" mapstructure:"title"`
 }
 
+type MapConfig struct {
+	TokenApi string `json:"token_api" mapstructure:"token_api"`
+	TokenWeb string `json:"token_web" mapstructure:"token_web"`
+}
+
 type Config struct {
 	Server ServerConfig `json:"server" mapstructure:"server"`
 	Dav    DavConfig    `json:"dav" mapstructure:"dav"`
 	Admin  AdminConfig  `json:"admin" mapstructure:"admin"`
 	Web    WebConfig    `json:"web" mapstructure:"web"`
+	Map    MapConfig    `json:"map" mapstructure:"map"`
 }

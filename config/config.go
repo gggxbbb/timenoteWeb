@@ -34,6 +34,10 @@ func init() {
 		Nickname: "timenoteUser",
 		Title:    "timenoteWeb",
 	})
+	viper.SetDefault("map", MapConfig{
+		TokenApi: "",
+		TokenWeb: "",
+	})
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
