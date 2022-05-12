@@ -28,8 +28,6 @@ git clone https://github.com/gggxbbb/timenoteWeb --recurse-submodules
 cd timenoteWeb
 
 # 确保安装 golang 1.18+
-# 拉取依赖
-go mod tidy
 # 编译
 go build
 ```
