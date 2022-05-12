@@ -31,6 +31,9 @@ jobs:
           sudo apt-get -y install gcc-arm-linux-gnueabihf libc6-dev-armhf-cross
           sudo apt-get -y install gcc-aarch64-linux-gnu libc6-dev-arm64-cross
       
+      - name: Get Models
+        run: go mod tidy
+      
       - name: Build for Windows AMD64
         run: |
           CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="-static" go build -o build/timenoteWeb_${COMMIT_SHA}_windows_amd64.exe
@@ -38,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: timenoteWeb_windows_amd64
-          path: build/timenote_*windows_amd64*
+          path: build/timenoteWeb_*windows_amd64*
 
       - name: Build for Linux AMD64
         run: |
@@ -47,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: timenoteWeb_linux_amd64
-          path: build/timenote_*linux_amd64*
+          path: build/timenoteWeb_*linux_amd64*
 
 
       - name: Build for Linux Arm64
@@ -57,4 +60,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: timenoteWeb_linux_arm64
-          path: build/timenote_*linux_arm64*
+          path: build/timenoteWeb_*linux_arm64*
