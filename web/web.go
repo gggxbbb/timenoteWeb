@@ -17,6 +17,7 @@ type simpleNote struct {
 	MoodEmoji    string `json:"moodEmoji"`
 	CategoryName string `json:"categoryName"`
 	CategoryID   string `json:"categoryID"`
+	Location     string `json:"location"`
 }
 
 type noteListData struct {
@@ -75,4 +76,15 @@ type locationMapData struct {
 	basicData
 	Locations []simpleLocation `json:"locations"`
 	Token     string           `json:"token"`
+}
+
+type locationListPageData struct {
+	basicData
+	Locations []simpleLocation `json:"locations"`
+}
+
+type locationPageData struct {
+	basicData
+	simpleLocation
+	Notes []simpleNote `json:"notes"`
 }

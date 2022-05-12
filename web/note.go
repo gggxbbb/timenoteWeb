@@ -19,6 +19,7 @@ func NoteListPage(c *gin.Context) {
 			WeatherEmoji: note.GetWeatherEmoji(),
 			Mood:         note.GetMoodStr(),
 			MoodEmoji:    note.GetMoodEmoji(),
+			Location:     note.Location,
 			CategoryID:   strconv.FormatInt(note.CategoryID, 10),
 			CategoryName: func() string {
 				c, s := data.FindCategory(note)
@@ -61,6 +62,7 @@ func NotePage(c *gin.Context) {
 					return c.CategoryName
 				}
 			}()
+			nData.Location = n.Location
 		}
 	}
 	var pData notePageData

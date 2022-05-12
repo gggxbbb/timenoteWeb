@@ -27,38 +27,38 @@
 
     <!-- 子分类列表 -->
     {{ if gt .SubcategoryCount 0 }}
-    <div>
-        <h3>子分类</h3>
-        <ul>
-            {{ range .Subcategories }}
-                <li>
-                    <hgroup>
-                        <h4><a href="/categories/{{ .ID }}">{{ .Name }}</a></h4>
-                        <h5>子分类: {{ .SubcategoryCount }} | 日记: {{ .NoteCount }}</h5>
-                    </hgroup>
-                </li>
-            {{ end }}
-        </ul>
-    </div>
+        <div>
+            <h3>子分类</h3>
+            <ul>
+                {{ range .Subcategories }}
+                    <li>
+                        <hgroup>
+                            <h4><a href="/categories/{{ .ID }}">{{ .Name }}</a></h4>
+                            <h5>子分类: {{ .SubcategoryCount }} | 日记: {{ .NoteCount }}</h5>
+                        </hgroup>
+                    </li>
+                {{ end }}
+            </ul>
+        </div>
     {{ end }}
 
     <!-- 日记列表 -->
     {{ if gt .NoteCount 0 }}
-    <div>
-        <h3>日记</h3>
-        <ul>
-            {{ range .Notes }}
-                <li>
-                    <hgroup>
-                        <h4><a href="/notes/{{ .ID }}">{{ .Title }}</a></h4>
-                        <h5>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
-                                    data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
-                                    href="/categories/{{ .CategoryID }}">{{ .CategoryName }}</a></h5>
-                    </hgroup>
-                </li>
-            {{ end }}
-        </ul>
-    </div>
+        <div>
+            <h3>日记</h3>
+            <ul>
+                {{ range .Notes }}
+                    <li>
+                        <hgroup>
+                            <h4><a href="/notes/{{ .ID }}">{{ .Title }}</a></h4>
+                            <h5>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
+                                        data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
+                                        href="/locations/{{ .Location }}">{{ .Location }}</a></h5>
+                        </hgroup>
+                    </li>
+                {{ end }}
+            </ul>
+        </div>
     {{ end }}
 
     <p><small><i>根据 {{ .Source }}</i></small></p>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+</head>
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>地点</h1>
+        <h2>这是你在时光记留下的足迹 | <a href="/locations/map">查看地图</a></h2>
+    </hgroup>
+
+    <!-- 日记列表 -->
+    <div>
+        <ul>
+            {{ range .Locations }}
+                <li>
+                    <hgroup>
+                        <h3><a href="/locations/{{ .Name }}">{{ .Name }}</a></h3>
+                        <h4>日记: {{ .Count }}</h4>
+                    </hgroup>
+                </li>
+            {{ end }}
+        </ul>
+        <p><small><i>根据 {{ .Source }}</i></small></p>
+    </div>
+
+
+</main>
+
+</body>
+
+</html>
