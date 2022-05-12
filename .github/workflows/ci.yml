@@ -10,10 +10,10 @@ jobs:
     name: Build
     runs-on: ubuntu-18.04
     steps:
-      - name: Set up Go 1.17
+      - name: Set up Go 1.18
         uses: actions/setup-go@v2
         with:
-          go-version: "1.17"
+          go-version: "1.18"
         id: go
 
       - name: Check out code into the Go module directory
@@ -31,9 +31,12 @@ jobs:
           sudo apt-get -y install gcc-arm-linux-gnueabihf libc6-dev-armhf-cross
           sudo apt-get -y install gcc-aarch64-linux-gnu libc6-dev-arm64-cross
       
+      - name: Get Go mods
+        run: go mod tidy
+      
       - name: Build for Windows AMD64
         run: |
-          CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="-static" go build -o build/timenoteWeb_${COMMIT_SHA}_windows_amd64.exe
+          CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -o build/timenoteWeb_${COMMIT_ID}_windows_amd64.exe
       - name: Upload Windows AMD64
         uses: actions/upload-artifact@v2
         with:
@@ -42,7 +45,7 @@ jobs:
 
       - name: Build for Linux AMD64
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 CC=gcc CGO_LDFLAGS="-static" go build -o build/timenoteWeb_${COMMIT_SHA}_linux_amd64.exe
+          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 CC=gcc go build -o build/timenoteWeb_${COMMIT_ID}_linux_amd64.exe
       - name: Upload Linux AMD64
         uses: actions/upload-artifact@v2
         with:
@@ -52,7 +55,7 @@ jobs:
 
       - name: Build for Linux Arm64
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc CGO_LDFLAGS="-static" go build -o build/timenoteWeb_${COMMIT_SHA}_linux_arm64.exe
+          CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o build/timenoteWeb_${COMMIT_ID}_linux_arm64.exe
       - name: Upload Linux Arm64
         uses: actions/upload-artifact@v2
         with:
