@@ -34,7 +34,7 @@ func LoadLastJSONFile() model.GeneralData {
 	log := logging.WithField("源", "LoadLastJSONFile")
 	var data model.GeneralData
 
-	dataPath := filepath.Join(AppConfig.Dav.DataPath, "/timeNote/")
+	dataPath := filepath.Join(AppConfig.Dav.DataPath, AppConfig.Data.Dir)
 
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
@@ -66,7 +66,7 @@ func LoadLastJSONFile() model.GeneralData {
 		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的 json 文件")
 	}
 
-	data = loadGeneralJsonData(filepath.Join(AppConfig.Dav.DataPath, "/timeNote/", lastModifiedFile.Name()))
+	data = loadGeneralJsonData(filepath.Join(AppConfig.Dav.DataPath, AppConfig.Data.Dir, lastModifiedFile.Name()))
 	data.Source = lastModifiedFile.Name()
 
 	return data

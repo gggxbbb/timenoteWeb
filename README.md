@@ -51,6 +51,19 @@ server:
 web:
   nickname: timenoteUser # WebUI 显示的用户名
   title: timenoteWeb # 暂时啥用没有
+data:
+  dir: /timeNote/ # WebDav 工作目录下存放时光记备份文件的文件夹
+map:
+  token_api: "" #天地图 服务器端 密钥
+  token_web: "" #天地图 浏览器端 密钥
 ```
 
 **注意**, 对于使用 WebDav, 时光记文件存储于 `WebDav根目录/timeNote`, 但使用其他存储方式是不一定如此。
+
+### 如果想和 OneDrive 备份配合使用
+
+1. 将 `dav -> data_path` 设置为 OneDrive 在你本地的路径, 如 `C:/Users/gggxbbb/OneDrive/`
+2. 将 `data -> dir` 设置为 `/应用/记时光/`
+
+逻辑上程序将正常读取数据。  
+**注意**, 由于 WebDav 备份和 OneDrive 备份数据存储路径不同, 记时光App 中仍应使用 OneDrive 模式进行备份。

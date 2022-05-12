@@ -26,6 +26,9 @@ func init() {
 	viper.SetDefault("dav", DavConfig{
 		DataPath: "./data",
 	})
+	viper.SetDefault("data", DataConfig{
+		Dir: "/timeNote/",
+	})
 	viper.SetDefault("admin", AdminConfig{
 		Username: "admin",
 		Password: "admin123456",
