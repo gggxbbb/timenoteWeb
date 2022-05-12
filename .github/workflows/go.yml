@@ -1,0 +1,34 @@
+name: Go
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: submodules-init
+      uses: snickerbockers/submodules-init@v4
+
+    - name: go-crossbuild
+      uses: izumin5210/action-go-crossbuild@v1.0.0
+      with:
+        name: timenoteWeb
+        dest: ./dist
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: build
+        path: ./dist
