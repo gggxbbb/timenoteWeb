@@ -24,7 +24,7 @@
 
 ```shell
 # 克隆 repo
-git clone https://github.com/gggxbbb/timenoteWeb
+git clone https://github.com/gggxbbb/timenoteWeb --recurse-submodules
 cd timenoteWeb
 
 # 确保安装 golang 1.18+
