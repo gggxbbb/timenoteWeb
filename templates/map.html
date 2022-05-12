@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+    <!--suppress HttpUrlsUsage -->
+    <script src="https://api.tianditu.gov.cn/api?v=4.0&tk={{ .Token }}"></script>
+    <style>
+        #mapDiv {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="container">
+    <!-- 地图内容 -->
+    <div id="mapDiv"></div>
+</main>
+
+<!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
+<script>
+    const data_info = [
+        {{ range .Locations }}
+        [{{ .Lon }}, {{ .Lat }}, {{ .Name }}, {{ .Count}}],
+        {{ end }}
+    ];
+
+    let map;
+    map = new T.Map('mapDiv', {
+        projection: 'EPSG:4326'
+    });
+    map.centerAndZoom(new T.LngLat(105, 38), 5);
+    map.enableScrollWheelZoom()
+    //创建缩放平移控件对象
+    const control = new T.Control.Zoom();
+    //添加缩放平移控件
+    map.addControl(control);
+    //创建对象
+    const ctrl = new T.Control.MapType();
+    //添加控件
+    map.addControl(ctrl);
+    //创建比例尺控件对象
+    const scale = new T.Control.Scale();
+    //添加比例尺控件
+    map.addControl(scale);
+
+    for (let i = 0; i < data_info.length; i++) {
+        const marker = new T.Marker(new T.LngLat(data_info[i][0], data_info[i][1]));  // 创建标注
+        const content = "<p>" + data_info[i][2] + "</p> | <a href=\"/locations/" + data_info[i][2] + "\">查看 " + data_info[i][3] + " 篇日记</a>"
+        map.addOverLay(marker);               // 将标注添加到地图中
+        addClickHandler(content, marker, i);
+    }
+
+    function addClickHandler(content, marker, i) {
+        marker.addEventListener("click", function (e) {
+                if (map.getZoom() < 15) {
+                    map.centerAndZoom(new T.LngLat(data_info[i][0], data_info[i][1]), 15);
+                } else {
+                    map.centerAndZoom(new T.LngLat(data_info[i][0], data_info[i][1]), map.getZoom());
+                }
+                openInfo(content, e)
+            }
+        );
+    }
+
+    function openInfo(content, e) {
+        const point = e.lnglat;
+        const marker = new T.Marker(point);// 创建标注
+        const markerInfoWin = new T.InfoWindow(content, {offset: new T.Point(0, -30)}); // 创建信息窗口对象
+        map.openInfoWindow(markerInfoWin, point); //开启信息窗口
+    }
+</script>
+
+</body>
+
+</html>

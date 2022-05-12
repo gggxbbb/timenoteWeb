@@ -63,3 +63,16 @@ type homeData struct {
 	TodoCountDone   int `json:"todo_count_done"`
 	TodoCountUndone int `json:"todo_count_undone"`
 }
+
+type simpleLocation struct {
+	Name  string  `json:"name"`
+	Lon   float64 `json:"lon"`
+	Lat   float64 `json:"lat"`
+	Count int     `json:"count"`
+}
+
+type locationMapData struct {
+	basicData
+	Locations []simpleLocation `json:"locations"`
+	Token     string           `json:"token"`
+}

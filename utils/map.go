@@ -31,7 +31,7 @@ func GetLocationByName(name string) (location Location) {
 	} else {
 		log.Info("地点不存在, 查询 API")
 		//goland:noinspection HttpUrlsUsage
-		resp, err := http.Get("http://api.tianditu.gov.cn/geocoder?ds={\"keyWord\":\"" + name + "\"}&tk=" + AppConfig.Map.TokenApi)
+		resp, err := http.Get("https://api.tianditu.gov.cn/geocoder?ds={\"keyWord\":\"" + name + "\"}&tk=" + AppConfig.Map.TokenApi)
 		if err != nil {
 			log.WithError(err).WithField("名称", name).Error("获取地点失败")
 		}
