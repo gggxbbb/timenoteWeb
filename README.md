@@ -39,20 +39,20 @@ go build
 程序在运行时会自动创建配置文件，以下为配置示例:
 
 ```yaml
+server:
+  debug: false # 是否为调试模式
+  enable_webdav: true # 是否启用 WebDav
+  listen: 0.0.0.0 # 监听地址
+  port: 8080 # 监听端口
 admin:
   password: admin123456 # 管理员账号
   username: admin # 管理员密码
-dav:
-  data_path: ./data # WebDav 工作目录
-server:
-  debug: false # 是否为调试模式
-  listen: 0.0.0.0 # 监听地址
-  port: 8080 # 监听端口
 web:
   nickname: timenoteUser # WebUI 显示的用户名
   title: timenoteWeb # 暂时啥用没有
 data:
-  dir: /timeNote/ # WebDav 工作目录下存放时光记备份文件的文件夹
+  root: ./data # 根数据目录, 也即 WebDav 工作目录
+  dir: /timeNote/ # 根数据目录下存放时光记备份文件的文件夹
 map:
   token_api: "" #天地图 服务器端 密钥
   token_web: "" #天地图 浏览器端 密钥
@@ -62,8 +62,10 @@ map:
 
 ### 如果想和 OneDrive 备份配合使用
 
-1. 将 `dav -> data_path` 设置为 OneDrive 在你本地的路径, 如 `C:/Users/gggxbbb/OneDrive/`
+1. 将 `data -> root` 设置为 OneDrive 在你本地的路径, 如 `C:/Users/gggxbbb/OneDrive/`
 2. 将 `data -> dir` 设置为 `/应用/记时光/`
+3. (可选) 将 `server -> enable_webdav` 设置为 `false`
 
 逻辑上程序将正常读取数据。  
-**注意**, 由于 WebDav 备份和 OneDrive 备份数据存储路径不同, 记时光App 中仍应使用 OneDrive 模式进行备份。
+**注意**, 由于 WebDav 备份和 OneDrive 备份数据存储路径不同, 记时光App 中仍应使用 OneDrive 模式进行备份。  
+因此此时内置 WebDav 服务将失去作用。并且此时可通过 WebDav 直接访问你 OneDrive 中的一切数据。为了安全，建议禁用内置 WebDav 服务。

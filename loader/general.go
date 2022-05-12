@@ -84,7 +84,7 @@ func LoadLastDataFile() model.GeneralData {
 	log := logging.WithField("源", "LoadLastDataFile")
 	var data model.GeneralData
 
-	dataPath := filepath.Join(AppConfig.Dav.DataPath, AppConfig.Data.Dir)
+	dataPath := filepath.Join(AppConfig.Data.Root, AppConfig.Data.Dir)
 
 	//find last modified data file in ./data/timeNote/
 	files, err := ioutil.ReadDir(dataPath)
@@ -117,7 +117,7 @@ func LoadLastDataFile() model.GeneralData {
 		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的数据文件")
 	}
 
-	path := filepath.Join(AppConfig.Dav.DataPath, AppConfig.Data.Dir, lastModifiedFile.Name())
+	path := filepath.Join(AppConfig.Data.Root, AppConfig.Data.Dir, lastModifiedFile.Name())
 
 	if strings.HasSuffix(lastModifiedFile.Name(), ".zip") {
 		data = loadGeneralZipData(path)

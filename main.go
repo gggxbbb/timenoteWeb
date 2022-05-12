@@ -26,8 +26,9 @@ func main() {
 	log := Logger.WithField("源", "main")
 
 	// 初始化数据目录
-	if _, err := os.Stat(AppConfig.Dav.DataPath); os.IsNotExist(err) {
-		err := os.Mkdir(AppConfig.Dav.DataPath, 0777)
+	if _, err := os.Stat(AppConfig.Data.Root); os.IsNotExist(err) {
+		log.Info("数据目录不存在, 初始化数据目录")
+		err := os.Mkdir(AppConfig.Data.Root, 0777)
 		if err != nil {
 			log.WithError(err).Fatal("无法新建数据目录!")
 		}
@@ -66,10 +67,15 @@ func main() {
 	r.Use(utils.AssetsServer("/assets"))
 
 	// 初始化 WebDav 服务
-	r.Use(utils.DavServer(
-		"/dav",
-		AppConfig.Dav.DataPath),
-	)
+	if AppConfig.Server.EnableWebDav {
+		log.Info("WebDav 服务已开启")
+		r.Use(utils.DavServer(
+			"/dav",
+			AppConfig.Data.Root),
+		)
+	} else {
+		log.Info("WebDav 服务已关闭")
+	}
 
 	// 应用 debug 路由
 	if gin.Mode() == gin.DebugMode {

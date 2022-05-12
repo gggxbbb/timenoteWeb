@@ -11,7 +11,7 @@ import (
 
 func AssetsServer(prefix string) gin.HandlerFunc {
 
-	dataPath := path.Join(AppConfig.Dav.DataPath, "timeNote")
+	dataPath := path.Join(AppConfig.Data.Root, AppConfig.Data.Dir)
 	fs := http.FileServer(http.Dir(dataPath))
 
 	return func(c *gin.Context) {

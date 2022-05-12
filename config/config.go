@@ -19,15 +19,14 @@ func init() {
 	log.Info("初始化配置")
 
 	viper.SetDefault("server", ServerConfig{
-		Listen: "0.0.0.0",
-		Port:   8080,
-		Debug:  false,
-	})
-	viper.SetDefault("dav", DavConfig{
-		DataPath: "./data",
+		Listen:       "0.0.0.0",
+		Port:         8080,
+		Debug:        false,
+		EnableWebDav: true,
 	})
 	viper.SetDefault("data", DataConfig{
-		Dir: "/timeNote/",
+		Root: "./data",
+		Dir:  "/timeNote/",
 	})
 	viper.SetDefault("admin", AdminConfig{
 		Username: "admin",

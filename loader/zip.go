@@ -56,7 +56,7 @@ func LoadLastZipFile() model.GeneralData {
 	log := logging.WithField("源", "LoadLastZipFile")
 	var data model.GeneralData
 
-	dataPath := filepath.Join(AppConfig.Dav.DataPath, AppConfig.Data.Dir)
+	dataPath := filepath.Join(AppConfig.Data.Root, AppConfig.Data.Dir)
 
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
@@ -88,7 +88,7 @@ func LoadLastZipFile() model.GeneralData {
 		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的压缩文件")
 	}
 
-	data = loadGeneralZipData(filepath.Join(AppConfig.Dav.DataPath, AppConfig.Data.Dir, lastModifiedFile.Name()))
+	data = loadGeneralZipData(filepath.Join(AppConfig.Data.Root, AppConfig.Data.Dir, lastModifiedFile.Name()))
 	data.Source = lastModifiedFile.Name()
 
 	return data
