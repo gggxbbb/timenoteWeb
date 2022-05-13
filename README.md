@@ -1,5 +1,7 @@
 # 时光记 Web
 
+[![Build](https://github.com/gggxbbb/timenoteWeb/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/gggxbbb/timenoteWeb/actions/workflows/build.yml) | [![Release](https://github.com/gggxbbb/timenoteWeb/actions/workflows/release.yml/badge.svg)](https://github.com/gggxbbb/timenoteWeb/actions/workflows/release.yml)  
+
 *最多是个查看器，没有什么特别的功能。*  
 **严格地说**, 这是一个自托管的面向 时光记 的 WebDav 服务端程序。
 
