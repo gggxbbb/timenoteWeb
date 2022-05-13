@@ -72,7 +72,7 @@ jobs:
       
       - name: Release
         run: |
-          ghr -t ${{ github.token }} \
+          ghr -t ${{ secrets.TOKEN }} \
               -u gggxbbb \
               -r timenoteWeb \
               -c ${{ github.sha }} \
