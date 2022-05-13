@@ -1,6 +1,6 @@
 name: ci
 
-on: [push, pull_request,workflow_dispatch]
+on: [push, pull_request,workflow_dispatch,release]
 
 env:
   COMMIT_ID: "${{ github.sha }}"
@@ -23,7 +23,6 @@ jobs:
           submodules: "recursive"
       - run: |
           git fetch --prune --unshallow --tags
-          export VERSION=$(git describe --tags)
       
       - name: Get dependencies
         run: |
@@ -65,6 +64,7 @@ jobs:
       - name: Prepare for Release
         if: startsWith(github.ref, 'refs/tags/')
         run: |
+          VERSION=$(git describe --tags)
           mv build/timenoteWeb_${COMMIT_ID}_windows_amd64.exe build/timenoteWeb_${VERSION}_windows_amd64.exe
           mv build/timenoteWeb_${COMMIT_ID}_linux_amd64 build/timenoteWeb_${VERSION}_linux_amd64
           mv build/timenoteWeb_${COMMIT_ID}_linux_arm64 build/timenoteWeb_${VERSION}_linux_arm64
