@@ -66,7 +66,7 @@ jobs:
           name: timenoteWeb_linux_arm64
           path: build/timenoteWeb_*linux_arm64*
 
-      - run: go get -u github.com/tcnksm/ghr
+      - run: go install github.com/tcnksm/ghr
       
       - name: Release
         run: |
