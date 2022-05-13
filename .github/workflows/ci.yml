@@ -45,7 +45,7 @@ jobs:
 
       - name: Build for Linux AMD64
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 CC=gcc go build -o build/timenoteWeb_${COMMIT_ID}_linux_amd64.exe
+          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 CC=gcc go build -o build/timenoteWeb_${COMMIT_ID}_linux_amd64
       - name: Upload Linux AMD64
         uses: actions/upload-artifact@v2
         with:
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build for Linux Arm64
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o build/timenoteWeb_${COMMIT_ID}_linux_arm64.exe
+          CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o build/timenoteWeb_${COMMIT_ID}_linux_arm64
       - name: Upload Linux Arm64
         uses: actions/upload-artifact@v2
         with:
@@ -74,9 +74,4 @@ jobs:
             clean: false
             submodules: "recursive"
 
-        - name: Upload release binaries
-          uses: alexellis/upload-assets@0.2.2
-          env:
-            GITHUB_TOKEN: ${{ github.token }}
-          with:
-            asset_paths: '["./build/*"]'
+        
