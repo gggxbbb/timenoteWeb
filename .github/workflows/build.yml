@@ -1,6 +1,6 @@
 name: Build
 
-on: [push, pull_request,workflow_dispatch]
+on: [workflow_dispatch]
 
 env:
   COMMIT_ID: "${{ github.sha }}"
