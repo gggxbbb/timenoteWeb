@@ -1,6 +1,7 @@
 package api
 
 const (
+	// SourceBuiltIn 来自程序内部的固定内容
 	SourceBuiltIn = "built-in"
 )
 

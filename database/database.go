@@ -8,8 +8,10 @@ import (
 
 var logging = Logger.WithField("包", "database")
 
+// DB 全局数据库对象
 var DB *gorm.DB
 
+// 初始化数据库
 func init() {
 	var log = logging.WithField("源", "init")
 	var err error

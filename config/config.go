@@ -7,17 +7,20 @@ import (
 	. "timenoteWeb/log"
 )
 
+// AppConfig 全局应用配置
 var AppConfig *Config
 
 // logging 包内私有 logging
 var logging = Logger.WithField("包", "config")
 
+// 初始化配置文件
 func init() {
 
 	log := logging.WithField("源", "init")
 
 	log.Info("初始化配置")
 
+	// 默认值
 	viper.SetDefault("server", ServerConfig{
 		Listen:       "0.0.0.0",
 		Port:         8080,
@@ -41,27 +44,33 @@ func init() {
 		TokenWeb: "",
 	})
 
+	// 配置文件默认存储于 ./config.yaml
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 
+	// 输出默认的配置文件
 	err := viper.SafeWriteConfig()
 	if err == nil {
 		log.Info("找不到配置文件, 已创建默认配置文件")
 	}
 
+	// 读取配置文件
 	err = viper.ReadInConfig()
 	if err != nil {
 		return
 	}
 
+	// 保存配置文件, 以实现配置文件的迭代
 	_ = viper.WriteConfig()
 
+	// 加载配置文件
 	err = viper.Unmarshal(&AppConfig)
 	if err != nil {
 		log.WithError(err).Fatal("解析配置文件失败")
 	}
 
+	// 监听配置文件改动
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		log := logging.WithField("源", "OnConfigChange")
 		err := viper.Unmarshal(&AppConfig)
