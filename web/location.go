@@ -9,6 +9,22 @@ import (
 )
 
 func MapPage(c *gin.Context) {
+	if AppConfig.Map.TokenWeb == "" {
+		var data errorPageData
+		data.Title = "日记地图"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoMapTokenWeb
+		c.HTML(200, "error.html", data)
+		return
+	}
+	if AppConfig.Map.TokenApi == "" {
+		var data errorPageData
+		data.Title = "日记地图"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoMapTokenApi
+		c.HTML(200, "error.html", data)
+		return
+	}
 	var data locationMapData
 	timenoteData := loader.LoadLastDataFile()
 	tempL := utils.GetLocationNotes(timenoteData.Notes)

@@ -88,3 +88,13 @@ type locationPageData struct {
 	simpleLocation
 	Notes []simpleNote `json:"notes"`
 }
+
+type simpleError struct {
+	Title string `json:"title"`
+	Intro string `json:"intro"`
+}
+
+type errorPageData struct {
+	basicData
+	Error simpleError `json:"error"`
+}

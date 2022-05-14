@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+</head>
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>糟糕😱, {{ .Nickname }}</h1>
+        <h2>你似乎遇到了什么麻烦</h2>
+    </hgroup>
+
+    <!-- 错误信息 -->
+    <article>
+        <hgroup>
+            <h2>{{ .Error.Title }}</h2>
+            <h3>{{ .Error.Intro }}</h3>
+        </hgroup>
+    </article>
+
+
+</main>
+
+</body>
+
+</html>
