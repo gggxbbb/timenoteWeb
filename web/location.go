@@ -125,7 +125,16 @@ func LocationPage(c *gin.Context) {
 			}
 			data.Notes = notes
 			data.Count = len(notes)
+			break
 		}
+	}
+	if data.Name == "" {
+		var data errorPageData
+		data.Title = "地点"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoSuchLocation
+		c.HTML(errNoSuchLocation.Code, "error.html", data)
+		return
 	}
 	data.Source = timenoteData.Source
 	data.Nickname = AppConfig.Web.Nickname

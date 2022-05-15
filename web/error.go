@@ -31,4 +31,10 @@ var (
 		Title: "CategoryNotFound",
 		Intro: "找不到该分类",
 	}
+	// errNoSuchLocation 找不到地点
+	errNoSuchLocation = simpleError{
+		Code:  404,
+		Title: "LocationNotFound",
+		Intro: "找不到该地点",
+	}
 )
