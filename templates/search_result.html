@@ -16,8 +16,7 @@
     <!-- 简介 -->
     <hgroup>
         <h1>搜索：{{ .Keyword }}</h1>
-        <h2>分类: {{ .CategoryCount }} | 日记 (标题): {{ .NoteCount }} | 日记 (内容): {{ .NoteWithKeyCount }} |
-            地点: {{ .LocationCount }}</h2>
+        <h2>分类: {{ .CategoryCount }} | 日记: {{ .NoteCount }} | 地点: {{ .LocationCount }}</h2>
     </hgroup>
 
     <script>
@@ -27,36 +26,21 @@
     <!-- 日记列表 -->
     {{ if gt .NoteCount 0 }}
         <div>
-            <h3>日记 (标题)</h3>
+            <h3>日记</h3>
+            <p>仅检索标题及内容</p>
             <ul>
                 {{ range .Notes }}
                     <li>
                         <hgroup>
                             <h4><a href="/notes/{{ .ID }}" class="with_keyword">{{ .Title }}</a></h4>
-                            <h5>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
+                            <h4>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
                                         data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
-                                        href="/locations/{{ .Location }}">{{ .Location }}</a></h5>
+                                        href="/categories/{{ .CategoryID }}">{{ .CategoryName }}</a> | <a
+                                        href="/locations/{{ .Location }}">{{ .Location }}</a></h4>
                         </hgroup>
-                    </li>
-                {{ end }}
-            </ul>
-        </div>
-    {{ end }}
-
-    <!-- 日记关键词列表 -->
-    {{ if gt .NoteWithKeyCount 0 }}
-        <div>
-            <h3>日记 (内容)</h3>
-            <ul>
-                {{ range .NotesWithKey }}
-                    <li>
-                        <hgroup>
-                            <h4><a href="/notes/{{ .ID }}">{{ .Title }}</a></h4>
-                            <h5>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
-                                        data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
-                                        href="/locations/{{ .Location }}">{{ .Location }}</a></h5>
-                        </hgroup>
-                        <blockquote>... <span class="with_keyword">{{ .KeyContent }}</span> ...</blockquote>
+                        {{ if .KeyContent }}
+                            <blockquote>... <span class="with_keyword">{{ .KeyContent }}</span> ...</blockquote>
+                        {{ end }}
                     </li>
                 {{ end }}
             </ul>
@@ -74,6 +58,9 @@
                             <h4><a href="/categories/{{ .ID }}" class="with_keyword">{{ .Name }}</a></h4>
                             <h5>子分类: {{ .SubcategoryCount }} | 日记: {{ .NoteCount }}</h5>
                         </hgroup>
+                        {{ if .KeyContent }}
+                            <blockquote><span class="with_keyword">{{ .KeyContent }}</span></blockquote>
+                        {{ end }}
                     </li>
                 {{ end }}
             </ul>

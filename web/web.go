@@ -110,18 +110,21 @@ type simpleNoteWithKey struct {
 	KeyContent string `json:"key_content"`
 }
 
+type simpleCategoryWithKey struct {
+	simpleCategory
+	KeyContent string `json:"key_content"`
+}
+
 // searchResultPageData 搜索页面数据
 type searchResultPageData struct {
 	basicData
-	Keyword          string              `json:"keyword"`
-	Notes            []simpleNote        `json:"notes"`
-	NoteCount        int                 `json:"note_count"`
-	NotesWithKey     []simpleNoteWithKey `json:"notes_with_key"`
-	NoteWithKeyCount int                 `json:"note_with_key_count"`
-	Categories       []simpleCategory    `json:"categories"`
-	CategoryCount    int                 `json:"category_count"`
-	Locations        []simpleLocation    `json:"locations"`
-	LocationCount    int                 `json:"location_count"`
+	Keyword       string                  `json:"keyword"`
+	Notes         []simpleNoteWithKey     `json:"notes_with_key"`
+	NoteCount     int                     `json:"note_with_key_count"`
+	Categories    []simpleCategoryWithKey `json:"categories"`
+	CategoryCount int                     `json:"category_count"`
+	Locations     []simpleLocation        `json:"locations"`
+	LocationCount int                     `json:"location_count"`
 }
 
 // simpleError 错误数据
