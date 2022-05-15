@@ -20,7 +20,13 @@
 
 ## Install
 
+### Release
+
 前往 [Release](https://github.com/gggxbbb/timenoteWeb/releases) 下载
+
+### Dev release
+
+前往 [自动化 Build](https://github.com/gggxbbb/timenoteWeb/actions/workflows/build.yml) 下载
 
 ### 自行编译
 
