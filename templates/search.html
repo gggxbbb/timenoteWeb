@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+</head>
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>Hi👋, {{ .Nickname }}</h1>
+        <h2>来搜索吧</h2>
+    </hgroup>
+
+    <!-- 搜索-->
+    <div>
+        <article>
+            <label>
+                <input type="text" name="keyword" placeholder="搜索">
+            </label>
+            <button type="submit" id="go_search">搜索</button>
+            <script>
+                document.getElementById('go_search').onclick = function () {
+                    const keyword = document.getElementsByName('keyword')[0].value;
+                    if (keyword.length > 0) {
+                        window.location.href = '/search/' + keyword;
+                    }
+                }
+            </script>
+        </article>
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

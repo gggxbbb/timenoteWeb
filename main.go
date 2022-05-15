@@ -87,6 +87,8 @@ func main() {
 	routes.CategoriesRoute(r)
 	// 应用 Locations 路由
 	routes.LocationsRoute(r)
+	// 应用 Search 路由
+	routes.SearchRoute(r)
 
 	// Run
 	srv := &http.Server{

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+</head>
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 简介 -->
+    <hgroup>
+        <h1>搜索：{{ .Keyword }}</h1>
+        <h2>分类: {{ .CategoryCount }} | 日记 (标题): {{ .NoteCount }} | 日记 (内容): {{ .NoteWithKeyCount }} |
+            地点: {{ .LocationCount }}</h2>
+    </hgroup>
+
+    <script>
+        const keyword = '{{ .Keyword }}';
+    </script>
+
+    <!-- 日记列表 -->
+    {{ if gt .NoteCount 0 }}
+        <div>
+            <h3>日记 (标题)</h3>
+            <ul>
+                {{ range .Notes }}
+                    <li>
+                        <hgroup>
+                            <h4><a href="/notes/{{ .ID }}" class="with_keyword">{{ .Title }}</a></h4>
+                            <h5>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
+                                        data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
+                                        href="/locations/{{ .Location }}">{{ .Location }}</a></h5>
+                        </hgroup>
+                    </li>
+                {{ end }}
+            </ul>
+        </div>
+    {{ end }}
+
+    <!-- 日记关键词列表 -->
+    {{ if gt .NoteWithKeyCount 0 }}
+        <div>
+            <h3>日记 (内容)</h3>
+            <ul>
+                {{ range .NotesWithKey }}
+                    <li>
+                        <hgroup>
+                            <h4><a href="/notes/{{ .ID }}">{{ .Title }}</a></h4>
+                            <h5>{{ .Date}} <span data-tooltip="{{ .Weather }}">{{ .WeatherEmoji }}</span>|<span
+                                        data-tooltip="{{ .Mood}}">{{ .MoodEmoji }}</span> <a
+                                        href="/locations/{{ .Location }}">{{ .Location }}</a></h5>
+                        </hgroup>
+                        <blockquote>... <span class="with_keyword">{{ .KeyContent }}</span> ...</blockquote>
+                    </li>
+                {{ end }}
+            </ul>
+        </div>
+    {{ end }}
+
+    <!-- 分类列表 -->
+    {{ if gt .CategoryCount 0 }}
+        <div>
+            <h3>分类</h3>
+            <ul>
+                {{ range .Categories }}
+                    <li>
+                        <hgroup>
+                            <h4><a href="/categories/{{ .ID }}" class="with_keyword">{{ .Name }}</a></h4>
+                            <h5>子分类: {{ .SubcategoryCount }} | 日记: {{ .NoteCount }}</h5>
+                        </hgroup>
+                    </li>
+                {{ end }}
+            </ul>
+        </div>
+    {{ end }}
+
+
+    <!-- 地点列表 -->
+    {{ if gt .LocationCount 0 }}
+        <div>
+            <h3>地点</h3>
+            <ul>
+                {{ range .Locations }}
+                    <li>
+                        <hgroup>
+                            <h3><a href="/locations/{{ .Name }}" class="with_keyword">{{ .Name }}</a></h3>
+                            <h4>日记: {{ .Count }}</h4>
+                        </hgroup>
+                    </li>
+                {{ end }}
+            </ul>
+        </div>
+    {{ end }}
+
+    <p><small><i>根据 {{ .Source }}</i></small></p>
+
+    <script>
+        const with_keyword = document.querySelectorAll('.with_keyword');
+        for (let i = 0; i < with_keyword.length; i++) {
+            with_keyword[i].innerHTML = with_keyword[i].innerHTML.replace(keyword, '<mark>' + keyword + '</mark>');
+        }
+    </script>
+
+</main>
+
+</body>
+
+</html>
