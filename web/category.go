@@ -7,6 +7,7 @@ import (
 	"timenoteWeb/loader"
 )
 
+// CategoryListPage 分类列表页
 func CategoryListPage(c *gin.Context) {
 	data, success := loader.LoadLastDataFile()
 	if !success {
@@ -36,6 +37,7 @@ func CategoryListPage(c *gin.Context) {
 	c.HTML(200, "categories.html", pData)
 }
 
+// CategoryPage 分类页
 func CategoryPage(c *gin.Context) {
 	id := c.Param("id")
 	data, success := loader.LoadLastDataFile()

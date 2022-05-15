@@ -7,6 +7,7 @@ import (
 	"timenoteWeb/loader"
 )
 
+// NoteListPage 显示笔记列表页面
 func NoteListPage(c *gin.Context) {
 	data, success := loader.LoadLastDataFile()
 	if !success {
@@ -47,6 +48,7 @@ func NoteListPage(c *gin.Context) {
 	c.HTML(200, "notes.html", pData)
 }
 
+// NotePage 显示笔记页面
 func NotePage(c *gin.Context) {
 	id := c.Param("id")
 	data, success := loader.LoadLastDataFile()

@@ -8,6 +8,7 @@ import (
 	"timenoteWeb/utils"
 )
 
+// MapPage 地图页面
 func MapPage(c *gin.Context) {
 	if AppConfig.Map.TokenWeb == "" {
 		var data errorPageData
@@ -53,6 +54,7 @@ func MapPage(c *gin.Context) {
 	c.HTML(200, "map.html", data)
 }
 
+// LocationListPage 地点列表页面
 func LocationListPage(c *gin.Context) {
 	var data locationListPageData
 	timenoteData, success := loader.LoadLastDataFile()
@@ -81,6 +83,7 @@ func LocationListPage(c *gin.Context) {
 	c.HTML(200, "locations.html", data)
 }
 
+// LocationPage 地点页面
 func LocationPage(c *gin.Context) {
 	location := c.Param("name")
 	var data locationPageData

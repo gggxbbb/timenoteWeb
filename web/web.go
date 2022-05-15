@@ -7,6 +7,7 @@ type basicData struct {
 	Source   string `json:"source"`
 }
 
+// simpleNote 基本笔记数据
 type simpleNote struct {
 	ID           string `json:"id"`
 	Title        string `json:"title"`
@@ -20,21 +21,25 @@ type simpleNote struct {
 	Location     string `json:"location"`
 }
 
+// noteListData 笔记列表数据
 type noteListData struct {
 	basicData
 	Notes []simpleNote `json:"notes"`
 }
 
+// note 某篇笔记数据
 type note struct {
 	simpleNote
 	Content string `json:"content"`
 }
 
+// notePageData 笔记页面数据
 type notePageData struct {
 	basicData
 	Note note `json:"note"`
 }
 
+// simpleCategory 基本分类数据
 type simpleCategory struct {
 	ID               string `json:"id"`
 	Name             string `json:"name"`
@@ -43,11 +48,13 @@ type simpleCategory struct {
 	NoteCount        int    `json:"noteCount"`
 }
 
+// categoryListData 分类列表数据
 type categoryListData struct {
 	basicData
 	Categories []simpleCategory `json:"categories"`
 }
 
+// categoryPageData 分类页面数据
 type categoryPageData struct {
 	basicData
 	simpleCategory
@@ -65,6 +72,7 @@ type homeData struct {
 	TodoCountUndone int `json:"todo_count_undone"`
 }
 
+// simpleLocation 基本地点数据
 type simpleLocation struct {
 	Name  string  `json:"name"`
 	Lon   float64 `json:"lon"`
@@ -72,29 +80,34 @@ type simpleLocation struct {
 	Count int     `json:"count"`
 }
 
+// locationMapData 地点地图数据
 type locationMapData struct {
 	basicData
 	Locations []simpleLocation `json:"locations"`
 	Token     string           `json:"token"`
 }
 
+// locationListPageData 地点页面数据
 type locationListPageData struct {
 	basicData
 	Locations []simpleLocation `json:"locations"`
 }
 
+// locationPageData 地点页面数据
 type locationPageData struct {
 	basicData
 	simpleLocation
 	Notes []simpleNote `json:"notes"`
 }
 
+// simpleError 错误数据
 type simpleError struct {
 	Code  int    `json:"code"`
 	Title string `json:"title"`
 	Intro string `json:"intro"`
 }
 
+// errorPageData 错误页面数据
 type errorPageData struct {
 	basicData
 	Error simpleError `json:"error"`
