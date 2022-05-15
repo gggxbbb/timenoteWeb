@@ -8,7 +8,15 @@ import (
 )
 
 func CategoryListPage(c *gin.Context) {
-	data := loader.LoadLastDataFile()
+	data, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "分类列表"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	var categories []simpleCategory
 	for _, category := range data.Categories {
 		if !category.IsSubCategory() {
@@ -30,7 +38,15 @@ func CategoryListPage(c *gin.Context) {
 
 func CategoryPage(c *gin.Context) {
 	id := c.Param("id")
-	data := loader.LoadLastDataFile()
+	data, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "分类"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	var pData categoryPageData
 	for _, category := range data.Categories {
 		if strconv.FormatInt(category.ID, 10) == id {

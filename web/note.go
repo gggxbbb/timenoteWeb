@@ -8,7 +8,15 @@ import (
 )
 
 func NoteListPage(c *gin.Context) {
-	data := loader.LoadLastDataFile()
+	data, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "日记列表"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	notes := make([]simpleNote, len(data.Notes))
 	for i, note := range data.Notes {
 		notes[i] = simpleNote{
@@ -41,7 +49,15 @@ func NoteListPage(c *gin.Context) {
 
 func NotePage(c *gin.Context) {
 	id := c.Param("id")
-	data := loader.LoadLastDataFile()
+	data, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "日记"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	var nData note
 	for _, n := range data.Notes {
 		if strconv.FormatInt(n.ID, 10) == id {

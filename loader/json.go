@@ -29,7 +29,8 @@ func loadGeneralJsonData(filename string) model.GeneralData {
 }
 
 // LoadLastJSONFile 加载最新的 json 文件
-func LoadLastJSONFile() model.GeneralData {
+//goland:noinspection GoUnusedExportedFunction
+func LoadLastJSONFile() (model.GeneralData, bool) {
 
 	log := logging.WithField("源", "LoadLastJSONFile")
 	var data model.GeneralData
@@ -59,9 +60,9 @@ func LoadLastJSONFile() model.GeneralData {
 
 	}
 
-	if lastModifiedFile == nil {
+	if lastModifiedFile == nil || !strings.HasSuffix(lastModifiedFile.Name(), ".json") {
 		log.Error("未找到最新的 json 文件")
-		return data
+		return data, false
 	} else {
 		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的 json 文件")
 	}
@@ -69,5 +70,5 @@ func LoadLastJSONFile() model.GeneralData {
 	data = loadGeneralJsonData(filepath.Join(AppConfig.Data.Root, AppConfig.Data.Dir, lastModifiedFile.Name()))
 	data.Source = lastModifiedFile.Name()
 
-	return data
+	return data, true
 }

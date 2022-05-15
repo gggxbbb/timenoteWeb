@@ -26,7 +26,15 @@ func MapPage(c *gin.Context) {
 		return
 	}
 	var data locationMapData
-	timenoteData := loader.LoadLastDataFile()
+	timenoteData, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "日记地图"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	tempL := utils.GetLocationNotes(timenoteData.Notes)
 	var tempM []simpleLocation
 	for _, v := range tempL {
@@ -47,7 +55,15 @@ func MapPage(c *gin.Context) {
 
 func LocationListPage(c *gin.Context) {
 	var data locationListPageData
-	timenoteData := loader.LoadLastDataFile()
+	timenoteData, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "地点列表"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	tempL := utils.GetLocationNotes(timenoteData.Notes)
 	var tempM []simpleLocation
 	for _, v := range tempL {
@@ -59,7 +75,7 @@ func LocationListPage(c *gin.Context) {
 		})
 	}
 	data.Locations = tempM
-	data.Title = "地点"
+	data.Title = "地点列表"
 	data.Source = timenoteData.Source
 	data.Nickname = AppConfig.Web.Nickname
 	c.HTML(200, "locations.html", data)
@@ -68,7 +84,15 @@ func LocationListPage(c *gin.Context) {
 func LocationPage(c *gin.Context) {
 	location := c.Param("name")
 	var data locationPageData
-	timenoteData := loader.LoadLastDataFile()
+	timenoteData, success := loader.LoadLastDataFile()
+	if !success {
+		var data errorPageData
+		data.Title = "地点"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoDataFile
+		c.HTML(errNoDataFile.Code, "error.html", data)
+		return
+	}
 	tempL := utils.GetLocationNotes(timenoteData.Notes)
 	for _, v := range tempL {
 		if v.Name == location {

@@ -80,7 +80,7 @@ func loadGeneralData(data model.RawData) model.GeneralData {
 }
 
 // LoadLastDataFile 加载最新的数据文件
-func LoadLastDataFile() model.GeneralData {
+func LoadLastDataFile() (model.GeneralData, bool) {
 	log := logging.WithField("源", "LoadLastDataFile")
 	var data model.GeneralData
 
@@ -112,7 +112,7 @@ func LoadLastDataFile() model.GeneralData {
 
 	if lastModifiedFile == nil {
 		log.Error("未找到最新的数据文件")
-		return data
+		return data, false
 	} else {
 		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的数据文件")
 	}
@@ -125,8 +125,8 @@ func LoadLastDataFile() model.GeneralData {
 		data = loadGeneralJsonData(path)
 	} else {
 		log.WithField("文件名", lastModifiedFile.Name()).Error("数据文件后缀不正确")
+		return data, false
 	}
 	data.Source = lastModifiedFile.Name()
-
-	return data
+	return data, true
 }

@@ -90,6 +90,7 @@ type locationPageData struct {
 }
 
 type simpleError struct {
+	Code  int    `json:"code"`
 	Title string `json:"title"`
 	Intro string `json:"intro"`
 }

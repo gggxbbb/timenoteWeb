@@ -51,7 +51,7 @@ func loadGeneralZipData(filename string) model.GeneralData {
 }
 
 //goland:noinspection GoUnusedExportedFunction
-func LoadLastZipFile() model.GeneralData {
+func LoadLastZipFile() (model.GeneralData, bool) {
 
 	log := logging.WithField("源", "LoadLastZipFile")
 	var data model.GeneralData
@@ -81,9 +81,9 @@ func LoadLastZipFile() model.GeneralData {
 
 	}
 
-	if lastModifiedFile == nil {
+	if lastModifiedFile == nil || !strings.HasSuffix(lastModifiedFile.Name(), ".zip") {
 		log.Error("未找到最新的压缩文件")
-		return data
+		return data, false
 	} else {
 		log.WithField("文件名", lastModifiedFile.Name()).Info("找到最新的压缩文件")
 	}
@@ -91,5 +91,5 @@ func LoadLastZipFile() model.GeneralData {
 	data = loadGeneralZipData(filepath.Join(AppConfig.Data.Root, AppConfig.Data.Dir, lastModifiedFile.Name()))
 	data.Source = lastModifiedFile.Name()
 
-	return data
+	return data, true
 }

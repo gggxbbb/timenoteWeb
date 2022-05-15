@@ -14,7 +14,15 @@ func HomePage(c *gin.Context) {
 		c.Redirect(302, "/login")
 	} else {
 		var data homeData
-		timenoteData := loader.LoadLastDataFile()
+		timenoteData, success := loader.LoadLastDataFile()
+		if !success {
+			var data errorPageData
+			data.Title = "首页"
+			data.Nickname = AppConfig.Web.Nickname
+			data.Error = errNoDataFile
+			c.HTML(errNoDataFile.Code, "error.html", data)
+			return
+		}
 		data.Title = "首页"
 		data.Source = timenoteData.Source
 		data.Nickname = AppConfig.Web.Nickname
