@@ -81,7 +81,16 @@ func NotePage(c *gin.Context) {
 				}
 			}()
 			nData.Location = n.Location
+			break
 		}
+	}
+	if nData.ID == "" {
+		var data errorPageData
+		data.Title = "日记"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoSuchNote
+		c.HTML(errNoSuchNote.Code, "error.html", data)
+		return
 	}
 	var pData notePageData
 	pData.Note = nData

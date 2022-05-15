@@ -19,4 +19,10 @@ var (
 		Title: "NoMapTokenApi",
 		Intro: "天地图 服务器端 API Token 未设置",
 	}
+	// errNoSuchNote 找不到笔记
+	errNoSuchNote = simpleError{
+		Code:  404,
+		Title: "NoteNotFound",
+		Intro: "找不到该笔记",
+	}
 )
