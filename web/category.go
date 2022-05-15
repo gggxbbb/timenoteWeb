@@ -55,6 +55,9 @@ func CategoryPage(c *gin.Context) {
 			pData.Title = "分类：" + category.CategoryName
 			pData.ID = strconv.FormatInt(category.ID, 10)
 			pData.Name = category.CategoryName
+			if category.CategoryDesc != "" {
+				pData.Description = category.CategoryDesc
+			}
 			notes := data.FindSubNote(category)
 			pData.NoteCount = len(notes)
 			for _, note := range notes {

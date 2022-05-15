@@ -25,6 +25,12 @@
         </p>
     {{ end }}
 
+    {{ if .Description }}
+    <p>
+        {{ .Description }}
+    </p>
+    {{ end }}
+
     <!-- 子分类列表 -->
     {{ if gt .SubcategoryCount 0 }}
         <div>

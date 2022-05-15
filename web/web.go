@@ -54,10 +54,15 @@ type categoryListData struct {
 	Categories []simpleCategory `json:"categories"`
 }
 
+type category struct {
+	simpleCategory
+	Description string `json:"description"`
+}
+
 // categoryPageData 分类页面数据
 type categoryPageData struct {
 	basicData
-	simpleCategory
+	category
 	Notes         []simpleNote     `json:"notes"`
 	Subcategories []simpleCategory `json:"subcategories"`
 }
