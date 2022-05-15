@@ -1,6 +1,11 @@
 name: Build
 
-on: [workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  pull_request:
 
 env:
   COMMIT_ID: "${{ github.sha }}"
@@ -23,17 +28,17 @@ jobs:
           submodules: "recursive"
       - run: |
           git fetch --prune --unshallow --tags
-      
+
       - name: Get dependencies
         run: |
           sudo apt-get update
           sudo apt-get -y install gcc-mingw-w64-x86-64
           sudo apt-get -y install gcc-arm-linux-gnueabihf libc6-dev-armhf-cross
           sudo apt-get -y install gcc-aarch64-linux-gnu libc6-dev-arm64-cross
-      
+
       - name: Get Go mods
         run: go mod tidy
-      
+
       - name: Build for Windows AMD64
         run: |
           CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -o build/timenoteWeb_${COMMIT_ID}_windows_amd64.exe
