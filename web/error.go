@@ -25,4 +25,10 @@ var (
 		Title: "NoteNotFound",
 		Intro: "找不到该笔记",
 	}
+	// errNoSuchCategory 找不到分类
+	errNoSuchCategory = simpleError{
+		Code:  404,
+		Title: "CategoryNotFound",
+		Intro: "找不到该分类",
+	}
 )

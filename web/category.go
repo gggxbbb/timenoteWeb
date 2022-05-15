@@ -91,7 +91,16 @@ func CategoryPage(c *gin.Context) {
 			if category.IsSubCategory() {
 				pData.ParentCategoryID = strconv.FormatInt(category.ParentCategoryID, 10)
 			}
+			break
 		}
+	}
+	if pData.ID == "" {
+		var data errorPageData
+		data.Title = "分类"
+		data.Nickname = AppConfig.Web.Nickname
+		data.Error = errNoSuchCategory
+		c.HTML(errNoSuchCategory.Code, "error.html", data)
+		return
 	}
 	pData.Nickname = AppConfig.Web.Nickname
 	pData.Source = data.Source
