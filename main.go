@@ -77,11 +77,6 @@ func main() {
 		log.Info("WebDav 服务已关闭")
 	}
 
-	// 应用 debug 路由
-	if gin.Mode() == gin.DebugMode {
-		routes.DebugRoute(r)
-	}
-
 	// 应用根路由
 	routes.RootRoute(r)
 	// 应用 API 路由
