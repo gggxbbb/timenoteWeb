@@ -20,7 +20,7 @@
 
 ## Install
 
-*暂无 release*
+前往 [Release](https://github.com/gggxbbb/timenoteWeb/releases) 下载
 
 ### 自行编译
 
