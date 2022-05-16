@@ -139,3 +139,35 @@ type errorPageData struct {
 	basicData
 	Error simpleError `json:"error"`
 }
+
+type timelineEvent struct {
+	Year  int    `json:"year"`
+	Month int    `json:"month"`
+	Day   int    `json:"day"`
+	ID    int64  `json:"id"`
+	Title string `json:"title"`
+	Url   string `json:"url"`
+}
+
+type timelineDay struct {
+	Year   int             `json:"year"`
+	Month  int             `json:"month"`
+	Day    int             `json:"day"`
+	Events []timelineEvent `json:"events"`
+}
+
+type timelineMonth struct {
+	Year  int           `json:"year"`
+	Month int           `json:"month"`
+	Days  []timelineDay `json:"days"`
+}
+
+type timelineYear struct {
+	Year   int             `json:"year"`
+	Months []timelineMonth `json:"months"`
+}
+
+type timelinePageData struct {
+	basicData
+	Years []timelineYear `json:"years"`
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+</head>
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>时间线</h1>
+        <h2>这是你在记时光写下的过去</h2>
+    </hgroup>
+
+    <!-- 数据 -->
+    <div>
+        <ul>
+            {{ range .Years }}
+                <li>
+                    <h3>{{ .Year}}</h3>
+                    <ul>
+                        {{ range .Months }}
+                            <li>
+                                <h4>{{ .Year}}-{{ .Month }}</h4>
+                                <ul>
+                                    {{ range .Days }}
+                                        <li>
+                                            <h5>{{ .Year}}-{{ .Month }}-{{ .Day }}</h5>
+                                            <ul>
+                                                {{ range .Events }}
+                                                    <li>
+                                                        <a href="{{ .Url }}">{{ .Title }}</a>
+                                                    </li>
+                                                {{ end }}
+                                            </ul>
+                                        </li>
+                                    {{ end }}
+                                </ul>
+                            </li>
+                        {{ end }}
+                    </ul>
+                </li>
+            {{ end }}
+        </ul>
+    </div>
+
+    <p><small><i>根据 {{ .Source }}</i></small></p>
+
+
+</main>
+
+</body>
+
+</html>

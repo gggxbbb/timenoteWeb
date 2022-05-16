@@ -89,6 +89,8 @@ func main() {
 	routes.LocationsRoute(r)
 	// 应用 Search 路由
 	routes.SearchRoute(r)
+	// 应用 Timeline 路由
+	routes.TimelineRoute(r)
 
 	// Run
 	srv := &http.Server{
