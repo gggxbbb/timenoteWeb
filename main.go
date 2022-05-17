@@ -19,11 +19,20 @@ var staticData embed.FS
 //go:embed templates/*
 var templatesData embed.FS
 
+var (
+	VERSION string
+	BUILD   string
+)
+
 func unescaped(x string) interface{} { return template.HTML(x) }
 
 func main() {
 
 	log := Logger.WithField("源", "main")
+
+	log.Info("记时光 WebViewer")
+	log.Info("版本: ", VERSION)
+	log.Info("构建: ", BUILD)
 
 	// 初始化数据目录
 	if _, err := os.Stat(AppConfig.Data.Root); os.IsNotExist(err) {
