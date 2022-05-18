@@ -72,7 +72,7 @@ func main() {
 	// 初始化静态文件
 	r.Use(utils.StaticServer("/static", http.FS(staticData)))
 
-	// 初始化时光记 assets 文件服务
+	// 初始化记时光 assets 文件服务
 	r.Use(utils.AssetsServer("/assets"))
 
 	// 初始化 WebDav 服务
