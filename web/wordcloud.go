@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/yanyiwu/gojieba"
+	"github.com/go-ego/gse"
 	. "timenoteWeb/config"
 	"timenoteWeb/loader"
 )
@@ -23,16 +23,13 @@ func Wordcloud(c *gin.Context) {
 		dataString += item.GetContentText() + "\n"
 	}
 
-	x := gojieba.NewJieba()
-	defer x.Free()
+	x, _ := gse.NewEmbed()
 
 	words := x.Cut(dataString, true)
+	words = x.Trim(words)
 
 	tempData := make(map[string]int)
 	for _, word := range words {
-		if word == "" || word == " " || word == "\n" {
-			continue
-		}
 		if _, ok := tempData[word]; ok {
 			tempData[word]++
 		} else {
