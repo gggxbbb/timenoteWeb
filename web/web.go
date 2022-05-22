@@ -171,3 +171,13 @@ type timelinePageData struct {
 	basicData
 	Years []timelineYear `json:"years"`
 }
+
+type wordcloudData struct {
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+}
+
+type wordcloudPageData struct {
+	basicData
+	Words []wordcloudData `json:"words"`
+}

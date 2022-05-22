@@ -108,6 +108,17 @@ func (d NoteData) GetContentHTML() string {
 	return data
 }
 
+func (d NoteData) GetContentText() string {
+	data := string(blackfriday.Run([]byte(d.Content),
+		blackfriday.WithExtensions(blackfriday.CommonExtensions)))
+	pData, err := goquery.NewDocumentFromReader(strings.NewReader(data))
+	if err != nil {
+		return d.Content
+	}
+	data = pData.Text()
+	return data
+}
+
 type CategoryData struct {
 	BgColor          int    `json:"bgColor"`
 	CategoryDesc     string `json:"categoryDesc"`

@@ -10,6 +10,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.11.0
+	github.com/yanyiwu/gojieba v1.1.2
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
 	gorm.io/driver/sqlite v1.3.2
 	gorm.io/gorm v1.23.5

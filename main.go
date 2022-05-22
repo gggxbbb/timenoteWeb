@@ -100,6 +100,8 @@ func main() {
 	routes.SearchRoute(r)
 	// 应用 Timeline 路由
 	routes.TimelineRoute(r)
+	// 应用 Wordcloud 路由
+	routes.WordcloudRoute(r)
 
 	// Run
 	srv := &http.Server{

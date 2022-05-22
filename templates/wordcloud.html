@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<!--suppress HtmlRequiredTitleElement -->
+<head>
+    {{ block "head.html" . }}{{ end }}
+    <style>
+
+        #wordcloud {
+            width: 100%;
+        }
+
+    </style>
+    <script src="/static/wordcloud2.js"></script>
+</head>
+
+<body>
+
+
+<main class="container">
+
+    {{ block "nav.html" . }}{{ end }}
+
+    <!-- 欢迎 -->
+    <hgroup>
+        <h1>词云</h1>
+        <h2>仅包含日记内容</h2>
+    </hgroup>
+
+    <article>
+        <div id="wordcloud"></div>
+    </article>
+
+
+    <script>
+        function ensureSize() {
+            const window_width = window.innerWidth;
+            const window_height = window.innerHeight;
+
+            const wordcloud = document.getElementById('wordcloud')
+            const width = wordcloud.offsetWidth
+            let height;
+
+            if (window_width > window_height) {
+                height = width * 0.618;
+            } else {
+                height = width / 0.618;
+            }
+
+            wordcloud.style.height = height + 'px'
+        }
+
+        function getDataList() {
+            const dataList = document.getElementsByTagName('word-data')
+            const data = []
+            for (let i = 0; i < dataList.length; i++) {
+                const dataItem = dataList[i]
+                const value = dataItem.getAttribute('data-value')
+                const count = dataItem.getAttribute('data-count')
+                data.push([value, count])
+            }
+            return data
+        }
+
+        function getColor() {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'random-light'
+            } else {
+                return 'random-dark'
+            }
+        }
+
+        function drawWordCloud() {
+
+            ensureSize()
+
+            const cloud = document.getElementById('wordcloud')
+            let wF = cloud.offsetWidth / 50;
+            if (wF >= 16) {
+                wF = 16;
+            }
+            if (wF <= 8) {
+                wF = 8;
+            }
+            cloud.innerHTML = '';
+            WordCloud(cloud, {
+                list: getDataList(),
+                gridSize: 8,
+                weightFactor: wF,
+                fontFamily: 'Hiragino Mincho Pro, serif',
+                color: getColor(),
+                drawOutOfBound: false,
+                shrinkToFit: true,
+                shape: 'square',
+            })
+        }
+
+        let media = window.matchMedia('(prefers-color-scheme: dark)');
+        let callback = (e) => {
+            //let prefersDarkMode = e.matches;
+            drawWordCloud()
+        };
+        if (typeof media.addEventListener === 'function') {
+            media.addEventListener('change', callback);
+        } else if (typeof media.addListener === 'function') {
+            media.addListener(callback);
+        }
+
+        window.onload = function () {
+            ensureSize()
+            drawWordCloud()
+        }
+        window.onresize = function () {
+            ensureSize()
+            drawWordCloud()
+        }
+
+    </script>
+
+</main>
+
+<word-data-container>
+    {{ range .Words }}
+        <word-data data-value="{{ .Name }}" data-count="{{ .Count }}"></word-data>
+    {{ end }}
+</word-data-container>
+
+</body>
+
+</html>
