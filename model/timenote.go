@@ -13,28 +13,28 @@ type RawData struct {
 	Platform string `json:"platform"`
 	Tables   []struct {
 		Data []struct {
-			CategoryID       int64  `json:"categoryId"`
-			CategoryName     string `json:"categoryName"`
-			Content          string `json:"content"`
-			ContentType      int    `json:"contentType"`
-			ID               int64  `json:"id"`
-			IsRemove         int    `json:"isRemove"`
-			Location         string `json:"location"`
-			Mood             string `json:"mood"`
-			Music            string `json:"music"`
-			Time             int64  `json:"time"`
-			Title            string `json:"title"`
-			Weather          int    `json:"weather"`
-			BgColor          int    `json:"bgColor"`
-			CategoryDesc     string `json:"categoryDesc"`
-			IsDefault        int    `json:"isDefault"`
-			IsLock           int    `json:"isLock"`
-			NoteCount        int    `json:"noteCount"`
-			ParentCategoryID int64  `json:"parentCategoryId"`
-			ColorIndex       int    `json:"colorIndex"`
-			Priority         int    `json:"priority"`
-			State            int    `json:"state"`
-			Tags             string `json:"tags"`
+			CategoryID       int64  `json:"categoryId,omitempty"`
+			CategoryName     string `json:"categoryName,omitempty"`
+			Content          string `json:"content,omitempty"`
+			ContentType      int    `json:"contentType,omitempty"`
+			ID               int64  `json:"id,omitempty"`
+			IsRemove         int    `json:"isRemove,omitempty"`
+			Location         string `json:"location,omitempty"`
+			Mood             string `json:"mood,omitempty"`
+			Music            string `json:"music,omitempty"`
+			Time             int64  `json:"time,omitempty"`
+			Title            string `json:"title,omitempty"`
+			Weather          int    `json:"weather,omitempty"`
+			BgColor          int    `json:"bgColor,omitempty"`
+			CategoryDesc     string `json:"categoryDesc,omitempty"`
+			IsDefault        int    `json:"isDefault,omitempty"`
+			IsLock           int    `json:"isLock,omitempty"`
+			NoteCount        int    `json:"noteCount,omitempty"`
+			ParentCategoryID int64  `json:"parentCategoryId,omitempty"`
+			ColorIndex       int    `json:"colorIndex,omitempty"`
+			Priority         int    `json:"priority,omitempty"`
+			State            int    `json:"state,omitempty"`
+			Tags             string `json:"tags,omitempty"`
 		} `json:"data"`
 		Name string `json:"name"`
 	} `json:"tables"`
