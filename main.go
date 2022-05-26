@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	. "timenoteWeb/config"
 	. "timenoteWeb/log"
 	"timenoteWeb/routes"
@@ -29,6 +30,12 @@ func unescaped(x string) interface{} { return template.HTML(x) }
 func main() {
 
 	log := Logger.WithField("源", "main")
+
+	banner, _ := staticData.ReadFile("static/banner.txt")
+	bannerStr := strings.Split(string(banner), "\n")
+	for _, v := range bannerStr {
+		log.Info(v)
+	}
 
 	log.Info("记时光 WebViewer")
 	log.Info("版本: ", VERSION)
