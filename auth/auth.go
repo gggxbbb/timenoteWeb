@@ -40,6 +40,7 @@ func BasicAuth(c *gin.Context) bool {
 }
 
 // BasicAuthFunc 作为一个 gin.HandlerFunc 来验证是否通过 BasicAuth
+//goland:noinspection GoUnusedExportedFunction
 func BasicAuthFunc() gin.HandlerFunc {
 	return gin.BasicAuth(gin.Accounts{
 		AppConfig.Admin.Username: AppConfig.Admin.Password,
@@ -143,13 +144,9 @@ func RequireToken(c *gin.Context) bool {
 	log := logging.WithField("源", "RequireToken")
 	var data Login
 	if err := c.ShouldBind(&data); err != nil {
-		if err = c.ShouldBindJSON(&data); err != nil {
-			if err = c.ShouldBindXML(&data); err != nil {
-				log.Info("登陆数据解析失败")
-				c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
-				return false
-			}
-		}
+		log.Info("登陆数据解析失败")
+		c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
+		return false
 	}
 	if data.Username != AppConfig.Admin.Username || data.Password != AppConfig.Admin.Password {
 		c.Redirect(302, "/login?redirect="+c.Request.URL.Path)
