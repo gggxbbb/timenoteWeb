@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"time"
 	"timenoteWeb/routes"
 	. "timenoteWeb/utils/config"
 	. "timenoteWeb/utils/log"
@@ -93,32 +96,30 @@ func main() {
 		log.Info("WebDav 服务已关闭")
 	}
 
-	// 应用根路由
-	routes.RootRoute(r)
-	// 应用 API 路由
-	routes.ApiRoute(r)
-	// 应用 Notes 路由
-	routes.NotesRoute(r)
-	// 应用 Categories 路由
-	routes.CategoriesRoute(r)
-	// 应用 Locations 路由
-	routes.LocationsRoute(r)
-	// 应用 Search 路由
-	routes.SearchRoute(r)
-	// 应用 Timeline 路由
-	routes.TimelineRoute(r)
-	// 应用 Wordcloud 路由
-	routes.WordcloudRoute(r)
+	// 应用路由
+	routes.EnableRoute(r)
 
 	// Run
 	srv := &http.Server{
 		Addr:    AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port),
 		Handler: r,
 	}
-	srv.SetKeepAlivesEnabled(true)
-	log.Info("Listening on " + AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port))
-	err = srv.ListenAndServe()
-	if err != nil {
-		log.WithError(err).Fatal("服务器启动失败!")
+	go func() {
+		// 服务连接
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Info("Server 停止中...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.WithError(err).Fatal("出现异常")
 	}
+	log.Info("再见, 我的朋友!")
 }

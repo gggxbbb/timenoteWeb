@@ -2,18 +2,18 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	apiFunc "timenoteWeb/api"
+	"timenoteWeb/routes/api"
 	"timenoteWeb/utils/auth"
 )
 
 func ApiRoute(r *gin.Engine) {
 
-	api := r.Group("/api")
+	apiR := r.Group("/api")
 
-	api.GET("/values", apiFunc.GetValues)
+	apiR.GET("/values", api.GetValues)
 
-	apiAuthed := api.Group("/authed", auth.CookieTokenAuthFunc())
+	apiAuthed := apiR.Group("/authed", auth.CookieTokenAuthFunc())
 
-	apiAuthed.GET("/locations", apiFunc.GetLocations)
+	apiAuthed.GET("/locations", api.GetLocations)
 
 }

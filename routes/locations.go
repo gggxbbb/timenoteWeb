@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"timenoteWeb/routes/web"
 	"timenoteWeb/utils/auth"
-	"timenoteWeb/web"
 )
 
 func LocationsRoute(r *gin.Engine) {
