@@ -1,14 +1,20 @@
-package utils
+package _map
 
 import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
 	"net/http"
-	. "timenoteWeb/config"
 	. "timenoteWeb/database"
 	"timenoteWeb/model"
+	. "timenoteWeb/utils/config"
 )
+import (
+	. "timenoteWeb/utils/log"
+)
+
+// logging 包内私有 logger
+var logging = Logger.WithField("包", "utils.map")
 
 type geocoderRep struct {
 	Location struct {

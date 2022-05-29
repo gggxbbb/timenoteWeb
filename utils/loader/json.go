@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strings"
-	. "timenoteWeb/config"
-	. "timenoteWeb/log"
 	"timenoteWeb/model"
+	. "timenoteWeb/utils/config"
+	. "timenoteWeb/utils/log"
 )
 
 // loadGeneralJsonData 将指定 json 文件加载为 model.GeneralData
@@ -39,7 +39,7 @@ func LoadLastJSONFile() (model.GeneralData, bool) {
 
 	files, err := ioutil.ReadDir(dataPath)
 	if err != nil {
-		Logger.Panic(err)
+		log.Logger.Panic(err)
 	}
 
 	var lastModifiedFile fs.FileInfo

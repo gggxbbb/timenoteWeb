@@ -3,8 +3,8 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"strconv"
-	. "timenoteWeb/config"
-	"timenoteWeb/loader"
+	. "timenoteWeb/utils/config"
+	"timenoteWeb/utils/loader"
 )
 
 // CategoryListPage 分类列表页

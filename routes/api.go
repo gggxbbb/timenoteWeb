@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	apiFunc "timenoteWeb/api"
-	"timenoteWeb/auth"
+	"timenoteWeb/utils/auth"
 )
 
 func ApiRoute(r *gin.Engine) {

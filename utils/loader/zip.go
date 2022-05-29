@@ -9,9 +9,9 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strings"
-	. "timenoteWeb/config"
-	. "timenoteWeb/log"
 	"timenoteWeb/model"
+	. "timenoteWeb/utils/config"
+	. "timenoteWeb/utils/log"
 )
 
 func loadGeneralZipData(filename string) model.GeneralData {

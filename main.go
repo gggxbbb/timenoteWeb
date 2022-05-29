@@ -8,10 +8,10 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	. "timenoteWeb/config"
-	. "timenoteWeb/log"
 	"timenoteWeb/routes"
-	"timenoteWeb/utils"
+	. "timenoteWeb/utils/config"
+	. "timenoteWeb/utils/log"
+	"timenoteWeb/utils/server"
 )
 
 //go:embed static/*
@@ -74,18 +74,18 @@ func main() {
 	r.SetHTMLTemplate(templates)
 
 	// 初始化日志
-	r.Use(utils.LoggerMiddleware())
+	r.Use(LoggerMiddleware())
 
 	// 初始化静态文件
-	r.Use(utils.StaticServer("/static", http.FS(staticData)))
+	r.Use(server.StaticServer("/static", http.FS(staticData)))
 
 	// 初始化记时光 assets 文件服务
-	r.Use(utils.AssetsServer("/assets"))
+	r.Use(server.AssetsServer("/assets"))
 
 	// 初始化 WebDav 服务
 	if AppConfig.Server.EnableWebDav {
 		log.Info("WebDav 服务已开启")
-		r.Use(utils.DavServer(
+		r.Use(server.DavServer(
 			"/dav",
 			AppConfig.Data.Root),
 		)

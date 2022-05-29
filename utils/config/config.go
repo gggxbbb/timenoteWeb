@@ -4,14 +4,14 @@ package config
 import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	. "timenoteWeb/log"
+	. "timenoteWeb/utils/log"
 )
 
 // AppConfig 全局应用配置
 var AppConfig *Config
 
 // logging 包内私有 logging
-var logging = Logger.WithField("包", "config")
+var logging = Logger.WithField("包", "utils.config")
 
 // 初始化配置文件
 func init() {

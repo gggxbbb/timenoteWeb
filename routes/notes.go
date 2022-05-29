@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"timenoteWeb/auth"
+	"timenoteWeb/utils/auth"
 	"timenoteWeb/web"
 )
 

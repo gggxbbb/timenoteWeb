@@ -1,10 +1,9 @@
-package utils
+package log
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"time"
-	. "timenoteWeb/log"
 )
 
 func LoggerMiddleware() gin.HandlerFunc {

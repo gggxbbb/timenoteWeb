@@ -1,12 +1,12 @@
-package utils
+package server
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"path"
 	"strings"
-	"timenoteWeb/auth"
-	. "timenoteWeb/config"
+	"timenoteWeb/utils/auth"
+	. "timenoteWeb/utils/config"
 )
 
 func AssetsServer(prefix string) gin.HandlerFunc {

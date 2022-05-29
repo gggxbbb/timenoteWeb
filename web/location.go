@@ -3,9 +3,9 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"strconv"
-	. "timenoteWeb/config"
-	"timenoteWeb/loader"
-	"timenoteWeb/utils"
+	. "timenoteWeb/utils/config"
+	"timenoteWeb/utils/loader"
+	"timenoteWeb/utils/map"
 )
 
 // MapPage 地图页面
@@ -36,7 +36,7 @@ func MapPage(c *gin.Context) {
 		c.HTML(errNoDataFile.Code, "error.html", data)
 		return
 	}
-	tempL := utils.GetLocationNotes(timenoteData.Notes)
+	tempL := _map.GetLocationNotes(timenoteData.Notes)
 	var tempM []simpleLocation
 	for _, v := range tempL {
 		tempM = append(tempM, simpleLocation{
@@ -66,7 +66,7 @@ func LocationListPage(c *gin.Context) {
 		c.HTML(errNoDataFile.Code, "error.html", data)
 		return
 	}
-	tempL := utils.GetLocationNotes(timenoteData.Notes)
+	tempL := _map.GetLocationNotes(timenoteData.Notes)
 	var tempM []simpleLocation
 	for _, v := range tempL {
 		tempM = append(tempM, simpleLocation{
@@ -96,7 +96,7 @@ func LocationPage(c *gin.Context) {
 		c.HTML(errNoDataFile.Code, "error.html", data)
 		return
 	}
-	tempL := utils.GetLocationNotes(timenoteData.Notes)
+	tempL := _map.GetLocationNotes(timenoteData.Notes)
 	for _, v := range tempL {
 		if v.Name == location {
 			data.Title = "地点: " + v.Name

@@ -1,10 +1,10 @@
-package utils
+package server
 
 import (
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
-	"timenoteWeb/auth"
+	"timenoteWeb/utils/auth"
 
 	"github.com/gin-gonic/gin"
 	wd "golang.org/x/net/webdav"
@@ -33,7 +33,7 @@ func DavServer(prefix string, rootDir string) gin.HandlerFunc {
 		if strings.HasPrefix(c.Request.URL.Path, w.Prefix) {
 			if !auth.BasicAuth(c) {
 				log.Warn("无效登录")
-				c.AbortWithStatus(403)
+				c.AbortWithStatus(401)
 				return
 			}
 			c.Status(200)

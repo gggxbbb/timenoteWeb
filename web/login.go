@@ -3,7 +3,7 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"timenoteWeb/auth"
+	"timenoteWeb/utils/auth"
 )
 
 // LoginPage 登录页

@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
-	. "timenoteWeb/config"
-	"timenoteWeb/loader"
-	"timenoteWeb/utils"
+	. "timenoteWeb/utils/config"
+	"timenoteWeb/utils/loader"
+	"timenoteWeb/utils/map"
 )
 
 func SearchPage(c *gin.Context) {
@@ -98,7 +98,7 @@ func SearchResultPage(c *gin.Context) {
 	data.Categories = CategoriesResult
 	data.CategoryCount = len(CategoriesResult)
 
-	locations := utils.GetLocationNotes(timenoteData.Notes)
+	locations := _map.GetLocationNotes(timenoteData.Notes)
 	var locationResult []simpleLocation
 	for _, location := range locations {
 		if strings.Contains(location.Name, keyword) {

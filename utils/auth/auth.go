@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"time"
-	. "timenoteWeb/config"
-	. "timenoteWeb/log"
+	. "timenoteWeb/utils/config"
+	. "timenoteWeb/utils/log"
 )
 
 // logging 包内私有 logger
-var logging = Logger.WithField("包", "auth")
+var logging = Logger.WithField("包", "utils.auth")
 
 // Token 结构体, 用于存储用户的token
 type Token struct {

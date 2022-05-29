@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strings"
-	. "timenoteWeb/config"
 	"timenoteWeb/model"
+	. "timenoteWeb/utils/config"
 )
 
 // loadGeneralData 将 model.RawData 转换为 model.GeneralData

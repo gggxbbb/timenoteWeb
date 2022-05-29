@@ -3,7 +3,7 @@ package database
 import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	. "timenoteWeb/log"
+	. "timenoteWeb/utils/log"
 )
 
 var logging = Logger.WithField("包", "database")

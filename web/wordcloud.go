@@ -3,8 +3,8 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-ego/gse"
-	. "timenoteWeb/config"
-	"timenoteWeb/loader"
+	. "timenoteWeb/utils/config"
+	"timenoteWeb/utils/loader"
 )
 
 func Wordcloud(c *gin.Context) {
