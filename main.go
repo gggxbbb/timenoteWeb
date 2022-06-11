@@ -104,10 +104,11 @@ func main() {
 		Addr:    AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port),
 		Handler: r,
 	}
+	log.Info("listen on " + AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port))
 	go func() {
 		// 服务连接
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
+			log.WithError(err).Fatal("listen error")
 		}
 	}()
 
