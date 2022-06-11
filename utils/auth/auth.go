@@ -27,6 +27,19 @@ type Token struct {
 // tokenPool Token 存储池
 var tokenPool []Token
 
+// BasicAuth 用于检查是否通过 BasicAuth
+//
+// 若通过, 将返回 true, 否则返回 false
+func BasicAuth(c *gin.Context) bool {
+	AuthFunc := BasicAuthFunc()
+	AuthFunc(c)
+	if c.Writer.Status() == 401 {
+		return false
+	} else {
+		return true
+	}
+}
+
 // BasicAuthFunc 作为一个 gin.HandlerFunc 来验证是否通过 BasicAuth
 //goland:noinspection GoUnusedExportedFunction
 func BasicAuthFunc() gin.HandlerFunc {

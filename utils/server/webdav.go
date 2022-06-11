@@ -22,7 +22,7 @@ func logger(req *http.Request, err error) {
 }
 
 func DavServer(prefix string, rootDir string) gin.HandlerFunc {
-	//log := logging.WithField("源", "DavServer")
+	log := logging.WithField("源", "DavServer")
 	w := wd.Handler{
 		Prefix:     prefix,
 		FileSystem: wd.Dir(rootDir),
@@ -31,10 +31,13 @@ func DavServer(prefix string, rootDir string) gin.HandlerFunc {
 	}
 	return func(c *gin.Context) {
 		if strings.HasPrefix(c.Request.URL.Path, w.Prefix) {
-			auth.BasicAuthFunc()(c)
-			c.Status(200)
-			w.ServeHTTP(c.Writer, c.Request)
-			c.Abort()
+			if auth.BasicAuth(c) {
+				c.Status(200)
+				w.ServeHTTP(c.Writer, c.Request)
+				c.Abort()
+			} else {
+				log.Warn("无效登录")
+			}
 		}
 	}
 }
