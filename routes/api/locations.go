@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"timenoteWeb/utils/loader"
+	"timenoteWeb/model/loader"
 	"timenoteWeb/utils/map"
 )
 

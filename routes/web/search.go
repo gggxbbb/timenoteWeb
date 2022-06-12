@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
+	"timenoteWeb/model/loader"
 	. "timenoteWeb/utils/config"
-	"timenoteWeb/utils/loader"
 	"timenoteWeb/utils/map"
 )
 

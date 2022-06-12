@@ -43,6 +43,10 @@ func init() {
 		TokenApi: "",
 		TokenWeb: "",
 	})
+	viper.SetDefault("live", LiveConfig{
+		Enable:  true,
+		DataDir: "timenoteDoc",
+	})
 
 	// 配置文件默认存储于 ./config.yaml
 	viper.SetConfigName("config")

@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strconv"
 	"time"
+	"timenoteWeb/model/loader"
 	. "timenoteWeb/utils/config"
-	"timenoteWeb/utils/loader"
 )
 
 func TimelinePage(c *gin.Context) {

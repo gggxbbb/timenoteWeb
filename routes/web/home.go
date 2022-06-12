@@ -2,8 +2,8 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
+	"timenoteWeb/model/loader"
 	. "timenoteWeb/utils/config"
-	"timenoteWeb/utils/loader"
 )
 
 // HomePage 主页

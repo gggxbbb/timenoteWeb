@@ -13,6 +13,7 @@ import (
 	"time"
 	"timenoteWeb/routes"
 	. "timenoteWeb/utils/config"
+	"timenoteWeb/utils/live"
 	. "timenoteWeb/utils/log"
 	"timenoteWeb/utils/server"
 )
@@ -100,6 +101,7 @@ func main() {
 	routes.EnableRoute(r)
 
 	// Run
+	live.WatchBackupDataPath()
 	srv := &http.Server{
 		Addr:    AppConfig.Server.Listen + ":" + strconv.Itoa(AppConfig.Server.Port),
 		Handler: r,

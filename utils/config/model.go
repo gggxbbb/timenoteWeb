@@ -55,6 +55,11 @@ type MapConfig struct {
 	TokenWeb string `json:"token_web" mapstructure:"token_web"`
 }
 
+type LiveConfig struct {
+	Enable  bool   `json:"enable" mapstructure:"enable"`
+	DataDir string `json:"data_dir" mapstructure:"data_dir"`
+}
+
 // Config 总配置
 type Config struct {
 	// Server 服务配置
@@ -70,5 +75,6 @@ type Config struct {
 	Web WebConfig `json:"web" mapstructure:"web"`
 
 	// Map 地图服务配置
-	Map MapConfig `json:"map" mapstructure:"map"`
+	Map  MapConfig  `json:"map" mapstructure:"map"`
+	Live LiveConfig `json:"live" mapstructure:"live"`
 }
