@@ -11,11 +11,13 @@
 * [x] 自定义数据目录 (你甚至可以使用挂载的 OneDrive 等其他网盘的目录)
 * [x] WebDav 登录验证
 * [x] WebUI (有且仅有日记数量统计)
-* [ ] 查看日记内容
+* [x] 查看日记内容
 * [ ] ~~修改日记内容~~
-* [ ] 根据分类查看日记
+* [x] 根据分类查看日记
 * [ ] 查看 Todo
-* [ ] 导出日记为纯 Markdown 文件
+* [x] 导出日记为纯 Markdown 文件
+  * 目前仅支持自动导出全部
+  * 后续可能会支持将修改同步至备份文件
 * [ ] 其他乱七八糟的
 
 ## Install
@@ -64,6 +66,9 @@ data:
 map:
   token_api: "" #天地图 服务器端 密钥
   token_web: "" #天地图 浏览器端 密钥
+live:
+  data_dir: /timenoteDoc/ # 跟数据目录下存放 markdown 文件的文件夹
+  enable: true #是否启用自动导出 markdown
 ```
 
 **注意**, 对于使用 WebDav, 记时光文件存储于 `WebDav根目录/timeNote`, 但使用其他存储方式是不一定如此。
